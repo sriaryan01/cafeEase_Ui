@@ -8,8 +8,8 @@ const MyCalendar = ({ showCalendars, onDateChange }) => {
 
     React.useEffect(() => {
         onDateChange(
-            startDate ? formatDateTime(startDate) : null,
-            endDate ? formatDateTime(endDate) : null
+            startDate ? formatDateTime(startDate, 'start') : null,
+            endDate ? formatDateTime(endDate, 'end') : null
         );
     }, [startDate, endDate, onDateChange]);
 
@@ -29,15 +29,24 @@ const MyCalendar = ({ showCalendars, onDateChange }) => {
         setEndDate(null);
     };
 
-    const formatDateTime = (date) => {
+    const formatDateTime = (date, type = 'start') => {
         if (!date) return '';
         
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
+        
+        // Set start date to beginning of day (00:00:00) and end date to end of day (23:59:59)
+        let hours, minutes, seconds;
+        if (type === 'start') {
+            hours = '00';
+            minutes = '00';
+            seconds = '00';
+        } else {
+            hours = '23';
+            minutes = '59';
+            seconds = '59';
+        }
         
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
