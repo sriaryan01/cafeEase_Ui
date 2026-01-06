@@ -1,0 +1,138 @@
+.cart-container {
+  padding-top: 100px;
+}
+
+.inner-cart-container {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+}
+
+.Cart-Card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  width: 880px;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+}
+
+.total-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  width: 1080px;
+  background-color: rgba(102, 235, 210, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+}
+
+.Cart-Card:hover {
+  background-color: #f6f6f6;
+  box-shadow: none;
+  border: 1px solid #666;
+}
+
+.left-side {
+  flex: 1;
+  padding: 20px;
+  flex-basis: 70%;
+}
+
+.overall {
+  border: 1px solid gray;
+  padding: 0px 5px;
+  border-radius: 5px;
+}
+
+.right-side {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 30%;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-quantity {
+  margin-bottom: 10px;
+  border: 2px solid rgb(249, 81, 81);
+}
+
+.place-ordr-btn:disabled {
+  border: none;
+  background-color: rgba(46, 46, 46, 0.241);
+  color: black;
+}
+
+.place-ordr-btn:disabled:hover {
+  border: none;
+  background-color: rgba(46, 46, 46, 0.241);
+  color: black;
+}
+
+.cart-heading {
+  width: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove-item-btn {
+  background-color: rgb(249, 81, 81);
+  color: white;
+  margin: 5px 0 0;
+  border: 2px solid white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 10px;
+
+}
+
+.remove-item-btn:hover {
+  background-color: white;
+  color: rgb(249, 81, 81);
+  border: 2px solid rgb(249, 81, 81);
+}
+
+@media (max-width: 880px) {
+  .Cart-Card {
+    width: 85vw;
+  }
+}
+
+@media (max-width: 450px) {
+  .Cart-Card {
+    flex-direction: column;
+  }
+
+  .left-side {
+    margin-bottom: -15px;
+  }
+
+  .right-side {
+    margin: 0px;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .card-tag {
+    height: 40px;
+    font-size: medium;
+  }
+
+  .ProductName {
+    font-size: 25px;
+  }
+
+  .item-quantity{
+    margin: 0px;
+  }
+  .remove-item-btn{
+    margin: 0px;
+  }
+}

@@ -1,0 +1,106 @@
+/* NotFound.css */
+.notfound-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    background-color: #f8f9fa;
+    text-align: center;
+  }
+  
+  .notfound-content {
+    max-width: 600px;
+  }
+  
+  .notfound-title {
+    font-size: 6rem;
+    color: #343a40;
+    margin: 0;
+    font-weight: 700;
+    animation: bounce 1.5s infinite;
+  }
+  
+  .notfound-subtitle {
+    font-size: 2rem;
+    color: #6c757d;
+    margin: 10px 0;
+  }
+  
+  .notfound-message {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-bottom: 20px;
+  }
+  
+  .button-container{
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .button-container button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    color: #000;
+    background-color: white;
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-container button:hover {
+    background-color: #fe9e0d;
+    color: #fff;
+  }
+  
+  .notfound-image {
+    margin-top: 30px;
+  }
+  
+  .notfound-image img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  @media (min-width: 768px) {
+    .notfound-container {
+      flex-direction: row;
+    }
+  
+    .notfound-content {
+      margin-right: 50px;
+    }
+  
+    .notfound-image {
+      max-width: 400px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    /* .notfound-container {
+      flex-direction: row;
+    } */
+  
+    .notfound-content {
+      margin-right: 50px;
+    }
+  
+    .notfound-image {
+      max-width: 200px;
+    }
+  }
+  
+  /* Bounce animation for the 404 title */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  

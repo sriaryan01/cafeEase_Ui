@@ -1,0 +1,408 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Reem Kufi", sans-serif !important;
+  scroll-behavior: smooth
+}
+
+.App {
+  min-height: 100vh;
+  width: 85vw;
+  max-width: 1900px;
+  margin: 0rem auto;
+
+}
+
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #f6f6f6;
+}
+
+.Home {
+  padding-top: 100px;
+  width: 85vw;
+  text-wrap: nowrap;
+}
+
+.primary-sub-heading {
+  font-size: 35px;
+  color: #fe9e0d;
+  font-weight: 700;
+}
+
+.primary-heading {
+  font-size: 55px;
+  color: #4c4c4c;
+  font-weight: 900;
+}
+
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+.Card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  width: 380px;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.Card:hover {
+  background-color: #f6f6f6;
+  box-shadow: none;
+  border: 1px solid #666;
+}
+
+.addCartOptions {
+  display: flex;
+  float: right;
+}
+
+.ProductQuantity {
+  width: 60px;
+  margin: 5px 5px 0;
+  border: 2px solid #fe9e0d;
+  justify-content: center;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  flex-wrap: wrap-reverse;
+}
+
+.ProductQuantity:focus {
+  border: 2px solid #fe9e0d;
+  outline: none;
+}
+
+.card-tag {
+  margin: 5px 0 0;
+  border: 2px solid #fe9e0d;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.card-tag:hover {
+  background-color: #fe9e0d;
+  color: white;
+}
+
+.ProductName {
+  margin: 0;
+  color: #fe9e0d;
+  font-size: 2em;
+}
+
+.ProductDescription {
+  font-size: 0.9em;
+  color: #666;
+  height: 80px;
+  text-overflow: clip;
+}
+
+.ProductPrice {
+  font-size: 1.1em;
+  color: #000;
+  font-weight: bold;
+  display: inline;
+}
+
+.CategoryName {
+  font-size: 0.9em;
+  color: #007bff;
+}
+
+.card-container {
+  display: flex;
+  width: 85vw;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+#dashboard-page-nav {
+  display: flex;
+  position: relative;
+  padding-left: 10px;
+  left: 5vw;
+  right: 5vw;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 90px;
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  /* width: 90vw; */
+
+  border: 2px solid #ddd;
+  border-radius: 0px 0px 30px 30px;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.2);
+
+}
+
+.navbar-menu-container {
+  display: none;
+  padding-right: 30px;
+}
+
+.navbar-links-container button {
+
+  margin-right: 4rem;
+  text-decoration: none;
+  color: black;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar-links-container :hover {
+  color: #fe9e0d;
+}
+
+#primary-button {
+  background-color: white;
+  outline: none;
+  border: none;
+  border-radius: 5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+  box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+}
+
+.navbar-cart-icon {
+  font-size: 1.15rem;
+}
+
+#primary-button:hover {
+  background-color: #fe9e0d;
+  color: #f6f6f6;
+
+}
+
+.navbar-menu-container svg {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.calendars {
+  display: flex;
+  gap: 5px;
+}
+
+.calendar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Spinner.css */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 90vw;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1000px) {
+  .navbar-links-container button {
+    margin-right: 1rem;
+    font-size: 1rem;
+  }
+
+  .primary-button {
+    font-size: 1rem;
+  }
+
+  .home-bannerImage-container {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 800px) {
+  .nav-logo-container {
+    max-width: 140px;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  #home-text{
+    font-size:30px;
+    text-wrap: wrap;
+    text-align: left;
+  }
+
+  .navbar-links-container {
+    display: none;
+  }
+
+  .navbar-menu-container {
+    display: flex;
+  }
+
+  .home-bannerImage-container {
+    max-width: 450px;
+  }
+
+  .home-banner-container,
+  .login-section-container {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-section-container {
+    flex-direction: column;
+  }
+
+  .home-image-section,
+  .login-section-image-container {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .primary-heading {
+    text-align: center;
+    max-width: 90%;
+  }
+
+  .primary-text {
+    text-align: center;
+    max-width: 80%;
+  }
+
+  .home-text-section,
+  .login-section-text-container {
+    justify-content: center;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .secondary-button {
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+  }
+
+  .login-section-container {
+    margin-top: 5rem !important;
+  }
+
+  .login-buttons-container {
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .primary-subheading {
+    text-align: center;
+  }
+
+  .watch-video-button {
+    margin-left: 0rem !important;
+    margin-top: 1rem;
+    font-size: 1rem !important;
+  }
+
+  .watch-video-button svg {
+    margin-right: 0.5rem !important;
+  }
+
+  .login-section-image-container {
+    margin-right: 0rem !important;
+  }
+
+  .work-section-wrapper {
+    margin-top: 5rem !important;
+  }
+
+  .work-section-bottom {
+    margin-top: 1rem !important;
+  }
+
+  .contact-form-container {
+    padding: 0.5rem !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem !important;
+  }
+
+  .contact-form-container input {
+    font-size: 1rem !important;
+    max-width: 100%;
+    padding: 0.5rem 1rem !important;
+    margin-bottom: 0.8rem !important;
+    text-align: center;
+  }
+
+  .footer-wrapper {
+    flex-direction: column;
+  }
+
+  .footer-section-two {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  .footer-section-columns {
+    margin: 1rem 0rem;
+  }
+
+  .App {
+    max-width: 95vw;
+  }
+
+  .calendars {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .home-bannerImage-container,
+  .login-background-image-container {
+    display: none;
+  }
+}

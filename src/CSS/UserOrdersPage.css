@@ -1,0 +1,94 @@
+.view-order-btn {
+    margin-bottom: 15px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+#search {
+    padding: 10px 10px;
+    /* margin-right: 10px; */
+    height: 50px;
+    width: 710px;
+    border: 2px solid #fe9e0d;
+    border-radius: 15px;
+    font-size: medium;
+}
+
+.calendar-icon {
+    margin-top: 5px;
+    height: 40px;
+    border: none;
+    scale: 1.5;
+    
+}
+
+.calendar-icon-container {
+    border: none;
+    /* margin-top: 10px; */
+    margin: 8px;
+    background-color: transparent;
+}
+
+.search-btn {
+    height: 50px;
+    width: 105px;
+    background-color: white;
+    color: #fe9e0d;
+}
+
+.search-btn:hover {
+    background-color: white;
+    color: #000;
+}
+
+@media (max-width: 880px) {
+    .search-container {
+        width: 100%;
+    }
+
+    #search {
+        width: 72%;
+    }
+
+    .calendar-icon-container {
+        width: 6%;
+    }
+
+    .search-btn {
+        width: 19%;
+    }
+}
+
+@media (max-width: 450px) {
+    .search-container {
+        width: 100vw;
+        padding: 10px;
+    }
+
+    #search {
+        width: 68%;
+    }
+
+    .calendar-icon-container {
+        width: 30px;
+    }
+
+    .search-btn {
+        width: 25%;
+        padding: auto;
+        color: white;
+        background-color: #fe9e0d;
+    }
+
+    .view-order-btn {
+        margin-bottom: 0px;
+    }
+
+    .Cart-Card{
+        margin: 20px;
+    }
+}
