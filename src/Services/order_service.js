@@ -42,15 +42,10 @@ export const getAllOrdersForUserWithSearchRequest = async(orderId, startTime, en
 }
 };
 
-// Admin: Get all orders with search
-export const getAllOrdersForAdmin = async (orderId, startTime, endTime) => {
+// Admin: Get all orders with search (supports customer filters and orderId/time)
+export const getAllOrdersForAdmin = async (searchRequest) => {
   try {
-    const reqDto = {
-      orderId: orderId || null,
-      startTime: startTime || null,
-      endTime: endTime || null
-    };
-    const response = await myAxios.post("/orders/search", reqDto);
+    const response = await myAxios.post("/orders/search", searchRequest || {});
     const data = response.data.data;
     return data;
   } catch (error) {

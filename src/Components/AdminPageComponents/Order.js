@@ -46,10 +46,13 @@ function Order() {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [showCalendars, setShowCalendars] = useState(false);
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerContact, setCustomerContact] = useState("");
 
   const loadOrders = async () => {
     try {
-      const response = await getAllOrdersForAdmin(null, null, null);
+      const response = await getAllOrdersForAdmin({});
       setAllOrders(response);
       setOrders(response);
     } catch (error) {
@@ -61,11 +64,20 @@ function Order() {
   const handleSearch = async () => {
     try {
       const orderId = searchQuery.trim() || null;
-      const response = await getAllOrdersForAdmin(
-        orderId,
-        selectedStartDate,
-        selectedEndDate
-      );
+
+      const searchRequest = {
+        orderId: orderId ? parseInt(orderId, 10) : null,
+        startTime: selectedStartDate || null,
+        endTime: selectedEndDate || null,
+        customer: {
+          name: customerName || null,
+          email: customerEmail || null,
+          contactNumber: customerContact || null,
+          id: null,
+        },
+      };
+
+      const response = await getAllOrdersForAdmin(searchRequest);
       setAllOrders(response);
       setOrders(response);
     } catch (error) {
@@ -177,6 +189,9 @@ function Order() {
   const clearFilters = () => {
     setFilterStatus("all");
     setSearchQuery("");
+    setCustomerName("");
+    setCustomerEmail("");
+    setCustomerContact("");
     setSelectedStartDate(null);
     setSelectedEndDate(null);
     setSortBy("orderId");
@@ -190,7 +205,7 @@ function Order() {
 
   return (
     <div className="order admin-page">
-      <div style={{ padding: "20px" }}>
+      <div style={{ padding: "20px", width: "100%", boxSizing: "border-box" }}>
         <h1 style={{ textAlign: "center" }}>Manage Orders</h1>
 
         {/* Search and Filters */}
@@ -216,6 +231,27 @@ function Order() {
           >
             Date Range
           </Button>
+          <TextField
+            size="small"
+            label="Customer Name"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            sx={{ minWidth: 180 }}
+          />
+          <TextField
+            size="small"
+            label="Customer Email"
+            value={customerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
+            sx={{ minWidth: 220 }}
+          />
+          <TextField
+            size="small"
+            label="Customer Contact"
+            value={customerContact}
+            onChange={(e) => setCustomerContact(e.target.value)}
+            sx={{ minWidth: 160 }}
+          />
           <Button variant="contained" onClick={handleSearch}>
             Search
           </Button>

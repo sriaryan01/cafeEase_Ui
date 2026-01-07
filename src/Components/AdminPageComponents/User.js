@@ -224,7 +224,7 @@ function User() {
 
   return (
     <div className="user admin-page">
-      <div style={{ padding: "20px" }}>
+      <div style={{ padding: "20px", width: "100%", boxSizing: "border-box" }}>
         <h1 style={{ textAlign: "center" }}>Manage Users</h1>
 
         {/* Search and Add Button */}

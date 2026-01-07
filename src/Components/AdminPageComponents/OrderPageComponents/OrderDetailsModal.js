@@ -37,9 +37,6 @@ const OrderDetailsModal = ({ open, onClose, order }) => {
               <strong>Order ID:</strong> {order.orderId}
             </Typography>
             <Typography>
-              <strong>User Email:</strong> {order.userEmail || "N/A"}
-            </Typography>
-            <Typography>
               <strong>Order Date:</strong> {formatDate(order.orderDateAndTime)}
             </Typography>
             <Typography>
@@ -50,6 +47,22 @@ const OrderDetailsModal = ({ open, onClose, order }) => {
             </Typography>
             <Typography>
               <strong>Total Amount:</strong> INR {order.totalAmount || 0}
+            </Typography>
+          </Paper>
+
+          <Paper sx={{ p: 2, mb: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              Customer Information
+            </Typography>
+            <Typography>
+              <strong>Name:</strong> {order.customerDetails?.name || "N/A"}
+            </Typography>
+            <Typography>
+              <strong>Email:</strong> {order.customerDetails?.email || "N/A"}
+            </Typography>
+            <Typography>
+              <strong>Contact:</strong>{" "}
+              {order.customerDetails?.contactNumber || "N/A"}
             </Typography>
           </Paper>
 

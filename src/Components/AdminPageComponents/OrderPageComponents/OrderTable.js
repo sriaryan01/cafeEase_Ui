@@ -8,7 +8,6 @@ import {
   IconButton,
   Checkbox,
   TablePagination,
-  Button,
 } from "@mui/material";
 import { Cancel, Visibility, Receipt } from "@mui/icons-material";
 
@@ -42,21 +41,16 @@ const OrderTable = ({
   };
 
   const isSelected = (orderId) => selectedOrders.includes(orderId);
-  const isAllSelected =
-    orders.length > 0 && selectedOrders.length === orders.length;
-  const isIndeterminate =
-    selectedOrders.length > 0 && selectedOrders.length < orders.length;
+  const isAllSelected = orders.length > 0 && selectedOrders.length === orders.length;
+  const isIndeterminate = selectedOrders.length > 0 && selectedOrders.length < orders.length;
 
   // Pagination logic
-  const paginatedOrders = orders.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  const paginatedOrders = orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const formatDate = (dateTime) => {
-    if (!dateTime) return "N/A";
+    if (!dateTime) return 'N/A';
     const date = new Date(dateTime);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   };
 
   return (
@@ -72,7 +66,9 @@ const OrderTable = ({
               />
             </TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Order ID</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }}>User Email</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Customer Name</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Customer Email</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Contact</TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Order Date</TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
             <TableCell sx={{ fontWeight: "bold" }}>Total Quantity</TableCell>
@@ -82,7 +78,10 @@ const OrderTable = ({
         </TableHead>
         <TableBody>
           {paginatedOrders.map((order) => (
-            <TableRow key={order.orderId} selected={isSelected(order.orderId)}>
+            <TableRow 
+              key={order.orderId}
+              selected={isSelected(order.orderId)}
+            >
               <TableCell padding="checkbox">
                 <Checkbox
                   checked={isSelected(order.orderId)}
@@ -90,56 +89,39 @@ const OrderTable = ({
                 />
               </TableCell>
               <TableCell>{order.orderId}</TableCell>
-              <TableCell>{order.userEmail || "N/A"}</TableCell>
+              <TableCell>{order.customerDetails?.name || 'N/A'}</TableCell>
+              <TableCell>{order.customerDetails?.email || 'N/A'}</TableCell>
+              <TableCell>{order.customerDetails?.contactNumber || 'N/A'}</TableCell>
               <TableCell>{formatDate(order.orderDateAndTime)}</TableCell>
               <TableCell>
-                <span
-                  style={{
-                    color:
-                      order.orderStatus === "CANCELLED"
-                        ? "red"
-                        : order.orderStatus === "DELIVERED"
-                        ? "green"
-                        : "orange",
-                    fontWeight: "bold",
-                  }}
-                >
+                <span style={{
+                  color: order.orderStatus === 'CANCELLED' ? 'red' : 
+                         order.orderStatus === 'DELIVERED' ? 'green' : 'orange',
+                  fontWeight: 'bold'
+                }}>
                   {order.orderStatus}
                 </span>
               </TableCell>
               <TableCell>{order.totalQuantity || 0}</TableCell>
               <TableCell>INR {order.totalAmount || 0}</TableCell>
               <TableCell>
-                <IconButton
-                  onClick={() => onView(order)}
-                  color="primary"
-                  title="View Details"
-                >
+                <IconButton onClick={() => onView(order)} color="primary" title="View Details">
                   <Visibility />
                 </IconButton>
-                <IconButton
-                  onClick={() => onViewBill(order.orderId)}
-                  color="secondary"
-                  title="View Bill"
-                >
+                <IconButton onClick={() => onViewBill(order.orderId)} color="secondary" title="View Bill">
                   <Receipt />
                 </IconButton>
-                {order.orderStatus !== "CANCELLED" &&
-                  order.orderStatus !== "DELIVERED" && (
-                    <IconButton
-                      onClick={() => onCancel(order.orderId)}
-                      color="error"
-                      title="Cancel Order"
-                    >
-                      <Cancel />
-                    </IconButton>
-                  )}
+                {order.orderStatus !== 'CANCELLED' && order.orderStatus !== 'DELIVERED' && (
+                  <IconButton onClick={() => onCancel(order.orderId)} color="error" title="Cancel Order">
+                    <Cancel />
+                  </IconButton>
+                )}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-
+      
       {onPageChange && (
         <TablePagination
           component="div"
@@ -156,3 +138,4 @@ const OrderTable = ({
 };
 
 export default OrderTable;
+
