@@ -72,19 +72,19 @@
     cursor: pointer;
     font-weight: 600;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
+  }
+  
 .admin-nav-actions .nav-button:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.admin-content {
+  }
+  
+  .admin-content {
     flex: 1;
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
-}
+  }
 
 @media (max-width: 768px) {
     .admin-nav-container {

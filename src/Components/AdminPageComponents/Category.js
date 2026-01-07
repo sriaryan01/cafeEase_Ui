@@ -52,24 +52,22 @@ function Category() {
     }
   };
 
-  const handleSearch = async (query) => {
+  const handleSearch = (query) => {
     setSearchQuery(query);
-    if (query.trim()) {
-      try {
-        const response = await searchCategories(query);
-        setAllCategories(response);
-      } catch (error) {
-        // If search fails, fall back to local filtering
-        console.error("Search error:", error);
-      }
-    } else {
-      loadCategories();
-    }
   };
 
   // Filter and sort categories
   const filteredAndSortedCategories = useMemo(() => {
     let filtered = [...allCategories];
+
+    // Filter by search query if provided
+    if (searchQuery.trim()) {
+      const queryLower = searchQuery.toLowerCase();
+      filtered = filtered.filter(cat => 
+        cat.name?.toLowerCase().includes(queryLower) ||
+        (cat.description && cat.description.toLowerCase().includes(queryLower))
+      );
+    }
 
     // Sort categories
     filtered.sort((a, b) => {
@@ -92,7 +90,7 @@ function Category() {
     });
 
     return filtered;
-  }, [allCategories, sortBy, sortOrder]);
+  }, [allCategories, sortBy, sortOrder, searchQuery]);
 
   const handleAdd = async (category, imageFile) => {
     try {

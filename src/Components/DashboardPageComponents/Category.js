@@ -9,10 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { 
   Box, 
   TextField, 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem, 
   InputAdornment,
   Button,
   Paper
@@ -21,13 +17,9 @@ import { Search, Clear } from '@mui/icons-material';
 
 const Category = () => {
     const [allCategories, setAllCategories] = useState([]);
-    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('name');
-    const [sortOrder, setSortOrder] = useState('asc');
-    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         const getCategory = async () => {
@@ -35,7 +27,6 @@ const Category = () => {
                 const categoriesData = await fetchCategories();
                 console.log("Categories fetched successfully");
                 setAllCategories(categoriesData);
-                setCategories(categoriesData);
                 setLoading(false);
 
             } catch (error) {
@@ -48,63 +39,33 @@ const Category = () => {
         getCategory();
     }, []);
 
-    // Handle search
-    const handleSearch = async (query) => {
+    // Handle search - just update the query, filtering happens in useMemo
+    const handleSearch = (query) => {
         setSearchQuery(query);
-        if (query.trim()) {
-            try {
-                const response = await searchCategories(query);
-                setAllCategories(response);
-            } catch (error) {
-                console.error('Search error:', error);
-                // Fall back to local filtering
-            }
-        } else {
-            // Reset to original categories
-            const getCategory = async () => {
-                try {
-                    const categoriesData = await fetchCategories();
-                    setAllCategories(categoriesData);
-                } catch (error) {
-                    console.error('Error fetching categories:', error);
-                }
-            };
-            getCategory();
-        }
     };
 
-    // Filter and sort categories
+    // Filter categories based on search query (no sorting)
     const filteredAndSortedCategories = useMemo(() => {
-        let filtered = [...allCategories].filter(cat => cat.status === "true"); // Only show active categories
-
-        // Sort categories
-        filtered.sort((a, b) => {
-            let aValue, bValue;
-            switch (sortBy) {
-                case 'name':
-                    aValue = a.name.toLowerCase();
-                    bValue = b.name.toLowerCase();
-                    break;
-                default:
-                    aValue = a.name.toLowerCase();
-                    bValue = b.name.toLowerCase();
-            }
-
-            if (sortOrder === 'asc') {
-                return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
-            } else {
-                return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
-            }
+        // Show all categories - only filter out if status is explicitly "false"
+        let filtered = [...allCategories].filter(cat => {
+            // Show category unless status is explicitly "false"
+            return cat.status !== "false" && cat.status !== false;
         });
 
+        // Filter by search query if provided
+        if (searchQuery.trim()) {
+            const queryLower = searchQuery.toLowerCase();
+            filtered = filtered.filter(cat => 
+                cat.name?.toLowerCase().includes(queryLower) ||
+                (cat.description && cat.description.toLowerCase().includes(queryLower))
+            );
+        }
+
         return filtered;
-    }, [allCategories, sortBy, sortOrder]);
+    }, [allCategories, searchQuery]);
 
     const clearFilters = () => {
         setSearchQuery('');
-        setSortBy('name');
-        setSortOrder('asc');
-        handleSearch('');
     };
 
     if (loading) {
@@ -121,8 +82,8 @@ const Category = () => {
                 <img src={BannerBackground} alt="" className='backgoround-img' />
             </div>
 
-            {/* Search and Filter Bar */}
-            <Paper elevation={2} sx={{ p: 2, mb: 3, mx: 'auto', maxWidth: '1200px' }}>
+            {/* Search Bar */}
+            <Paper elevation={2} sx={{ p: 2, mb: 3, mx: 'auto', maxWidth: '1200px', width: 'calc(100% - 40px)' }}>
                 <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
                     <TextField
                         placeholder="Search categories..."
@@ -137,29 +98,6 @@ const Category = () => {
                             ),
                         }}
                     />
-                    
-                    <FormControl size="small" sx={{ minWidth: 150 }}>
-                        <InputLabel>Sort By</InputLabel>
-                        <Select
-                            value={sortBy}
-                            label="Sort By"
-                            onChange={(e) => setSortBy(e.target.value)}
-                        >
-                            <MenuItem value="name">Name</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <FormControl size="small" sx={{ minWidth: 120 }}>
-                        <InputLabel>Order</InputLabel>
-                        <Select
-                            value={sortOrder}
-                            label="Order"
-                            onChange={(e) => setSortOrder(e.target.value)}
-                        >
-                            <MenuItem value="asc">Ascending</MenuItem>
-                            <MenuItem value="desc">Descending</MenuItem>
-                        </Select>
-                    </FormControl>
 
                     {searchQuery && (
                         <Button 
@@ -180,11 +118,11 @@ const Category = () => {
                         <p>No categories found matching your criteria.</p>
                     </Box>
                 ) : (
-                    <div className="category-section-bottom">
+                <div className="category-section-bottom">
                         {filteredAndSortedCategories.map(category => (
-                            <CategoryItem key={category.id} category={category} />
-                        ))}
-                    </div>
+                        <CategoryItem key={category.id} category={category} />
+                    ))}
+                </div>
                 )}
             </div>
         </div>

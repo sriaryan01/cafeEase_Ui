@@ -22,7 +22,7 @@ const SearchBar = ({ onSearch, value: controlledValue }) => {
       placeholder="Search products by name or description..."
       value={value}
       onChange={handleChange}
-      fullWidth
+    fullWidth
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -30,8 +30,8 @@ const SearchBar = ({ onSearch, value: controlledValue }) => {
           </InputAdornment>
         ),
       }}
-    />
-  );
+  />
+);
 };
 
 export default SearchBar;

@@ -75,5 +75,5 @@ export const createOrderByAdmin = async (emailId, items) => {
   } catch (error) {
     console.error('Error creating order by admin:', error);
     throw error;
-  }
+}
 };

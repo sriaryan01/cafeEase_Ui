@@ -54,9 +54,9 @@ function Product () {
 
   const fetchProducts = async () => {
     try {
-      const response = await adminProductList();
+    const response = await adminProductList();
       setAllProducts(response);
-      setProducts(response);
+    setProducts(response);
     } catch (error) {
       toast.error('Error fetching products');
       console.error(error);
@@ -65,31 +65,30 @@ function Product () {
 
   const getCategories = async () => {
     try {
-      const response = await fetchCategories();
-      setCategories(response);
+    const response = await fetchCategories();
+    setCategories(response);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleSearch = async (query) => {
+  const handleSearch = (query) => {
     setSearchQuery(query);
-    if (query.trim()) {
-      try {
-        const response = await searchProducts(query);
-        setAllProducts(response);
-      } catch (error) {
-        // If search fails, fall back to local filtering
-        console.error('Search error:', error);
-      }
-    } else {
-      fetchProducts();
-    }
   };
 
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...allProducts];
+
+    // Filter by search query if provided
+    if (searchQuery.trim()) {
+      const queryLower = searchQuery.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.name?.toLowerCase().includes(queryLower) ||
+        (p.description && p.description.toLowerCase().includes(queryLower)) ||
+        (p.categoryName && p.categoryName.toLowerCase().includes(queryLower))
+      );
+    }
 
     // Filter by category
     if (filterCategory !== 'all') {
@@ -139,7 +138,7 @@ function Product () {
     });
 
     return filtered;
-  }, [allProducts, filterCategory, filterStatus, minPrice, maxPrice, sortBy, sortOrder]);
+  }, [allProducts, filterCategory, filterStatus, minPrice, maxPrice, sortBy, sortOrder, searchQuery]);
 
   const handleAdd = async (product) => {
     try {
@@ -150,9 +149,9 @@ function Product () {
         await addProduct(product);
         toast.success('Product added successfully!');
       }
-      fetchProducts();
-      setModalOpen(false);
-      setSelectedProduct(null);
+    fetchProducts();
+    setModalOpen(false);
+    setSelectedProduct(null);
     } catch (error) {
       toast.error('Error saving product');
     }
@@ -165,9 +164,9 @@ function Product () {
 
   const handleDelete = async (id) => {
     try {
-      await deleteProduct(id);
+    await deleteProduct(id);
       toast.success('Product deleted successfully!');
-      fetchProducts();
+    fetchProducts();
     } catch (error) {
       toast.error('Error deleting product');
     }
@@ -330,7 +329,7 @@ function Product () {
             <MenuItem value="desc">Descending</MenuItem>
           </Select>
         </FormControl>
-
+      
         <Button variant="outlined" onClick={clearFilters}>
           Clear Filters
         </Button>
@@ -390,7 +389,7 @@ function Product () {
       />
       
       <Modal open={isModalOpen} onClose={() => setModalOpen(false)}>
-        <ProductForm onSave={handleAdd} selectedProduct={selectedProduct} categories={categories} />
+      <ProductForm onSave={handleAdd} selectedProduct={selectedProduct} categories={categories} />
       </Modal>
 
       {/* Bulk Delete Dialog */}
