@@ -45,7 +45,7 @@ const Login_Register = () => {
       if(decodedToken.role=='user')
         navigate('/products');
       else if(decodedToken.role=='admin')
-        navigate('/admin');
+        navigate('/admin/products');
       
 
     }).catch((error) => {
