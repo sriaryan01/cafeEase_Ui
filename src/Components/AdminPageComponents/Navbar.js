@@ -1,17 +1,22 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { logout } from '../../Services/user_service';
-import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "../../Services/user_service";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const links = [
+  { to: "/admin/products", label: "Products" },
+  { to: "/admin/category", label: "Categories" },
+  { to: "/admin/user", label: "Users" },
+  { to: "/admin/order", label: "Orders" },
+];
 
 const Navbar = () => {
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
 
     setTimeout(() => {
       toast.success("Logged out successfully", {
@@ -26,17 +31,29 @@ const Navbar = () => {
   return (
     <nav className="admin-page-nav">
       <ToastContainer />
-      <ul>
-        <li><NavLink to="/admin/products">Product</NavLink></li>
-        <li><NavLink to="/admin/category">Category</NavLink></li>
-        <li><NavLink to="/admin/user">User</NavLink></li>
-        <li><NavLink to="/admin/order">Order</NavLink></li>
-        <li><NavLink to="/admin/bill">Bill</NavLink></li>
-        <li><NavLink to="/admin">Go Home</NavLink></li>
-        <li><button className='nav-button' onClick={handleLogout} >Logout</button></li>
-      </ul>
+      <div className="admin-nav-container">
+        <div className="admin-nav-brand">CafeEase Admin</div>
+        <div className="admin-nav-links">
+          {links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                isActive ? "admin-nav-link active" : "admin-nav-link"
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </div>
+        <div className="admin-nav-actions">
+          <button className="nav-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
