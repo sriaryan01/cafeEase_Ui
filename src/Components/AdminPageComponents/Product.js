@@ -142,18 +142,22 @@ function Product () {
 
   const handleAdd = async (product) => {
     try {
+      let savedProduct;
       if (selectedProduct) {
-        await updateProduct(product);
+        savedProduct = await updateProduct(product);
         toast.success('Product updated successfully!');
       } else {
-        await addProduct(product);
+        savedProduct = await addProduct(product);
         toast.success('Product added successfully!');
       }
-    fetchProducts();
-    setModalOpen(false);
-    setSelectedProduct(null);
+      fetchProducts();
+      setModalOpen(false);
+      setSelectedProduct(null);
+      // Return saved product so ProductForm can use the ID for image upload
+      return savedProduct;
     } catch (error) {
       toast.error('Error saving product');
+      throw error;
     }
   };
 

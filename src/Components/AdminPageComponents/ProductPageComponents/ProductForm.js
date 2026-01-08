@@ -48,16 +48,30 @@ const ProductForm = ({ onSave, selectedProduct, categories }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSave(product);
-    
-    // Upload image if a new one was selected
-    if (imageFile && product.id) {
-      try {
-        await uploadProductImage(product.id, imageFile);
-        toast.success('Product image uploaded successfully!');
-      } catch (error) {
-        toast.error('Failed to upload product image');
+    try {
+      // Save product first (this will return the created/updated product with ID)
+      const savedProduct = await onSave(product);
+      
+      // Upload image if a new one was selected
+      // Use savedProduct.id if available, otherwise use product.id (for updates)
+      const productId = savedProduct?.id || savedProduct?.data?.id || product.id;
+      
+      if (imageFile && productId) {
+        try {
+          await uploadProductImage(productId, imageFile);
+          toast.success('Product image uploaded successfully!');
+          // Update preview with the uploaded image URL if available
+          if (savedProduct?.imageUrl) {
+            setImagePreview(savedProduct.imageUrl);
+          }
+        } catch (error) {
+          console.error('Image upload error:', error);
+          toast.error('Product saved but failed to upload image. Please try uploading again.');
+        }
       }
+    } catch (error) {
+      console.error('Product save error:', error);
+      // Error toast will be handled by onSave
     }
   };
 
