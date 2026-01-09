@@ -390,6 +390,7 @@ function Product () {
         rowsPerPage={rowsPerPage}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
+        onRefresh={fetchProducts}
       />
       
       <Modal open={isModalOpen} onClose={() => setModalOpen(false)}>
