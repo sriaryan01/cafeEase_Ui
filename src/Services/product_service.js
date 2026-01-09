@@ -142,19 +142,6 @@ export const getProductGlb = async (productId) => {
   }
 };
 
-/* ✅ Fetch 360-degree panorama image */
-export const getProduct360Image = async (productId) => {
-  try {
-    const response = await myAxios.get(`/product/360/${productId}`, {
-      responseType: "blob",
-    });
-    const url = URL.createObjectURL(response.data);
-    return url;
-  } catch (error) {
-    console.error("Error fetching 360 image:", error);
-    throw error;
-  }
-};
 
 /* ✅ Fetch multiple product images */
 export const getProductImages = async (productId) => {
@@ -168,19 +155,6 @@ export const getProductImages = async (productId) => {
   }
 };
 
-/* ✅ Fetch product video */
-export const getProductVideo = async (productId) => {
-  try {
-    const response = await myAxios.get(`/product/video/${productId}`, {
-      responseType: "blob",
-    });
-    const url = URL.createObjectURL(response.data);
-    return url;
-  } catch (error) {
-    console.error("Error fetching product video:", error);
-    throw error;
-  }
-};
 
 // Search products by name or description
 export const searchProducts = async (query) => {
