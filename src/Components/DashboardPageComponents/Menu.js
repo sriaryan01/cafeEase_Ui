@@ -183,7 +183,7 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
       <div
         style={{
           width: "100%",
-          height: "200px",
+          height: "250px",
           marginBottom: "12px",
           borderRadius: "8px",
           overflow: "hidden",
@@ -191,6 +191,7 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          position: "relative",
         }}
       >
         {loadingImage ? (
@@ -200,11 +201,10 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
             src={productImageUrl}
             alt={product.name}
             style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              width: "auto",
-              height: "auto",
-              objectFit: "contain",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
             }}
           />
         ) : (

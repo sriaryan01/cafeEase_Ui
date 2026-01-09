@@ -18,8 +18,20 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
-import { Edit, Delete, ViewInAr, Image as ImageIcon, AddPhotoAlternate, Close } from "@mui/icons-material";
-import { uploadGlbFile, getProductGlb, getProductImage, uploadProductImage } from "../../../Services/product_service";
+import {
+  Edit,
+  Delete,
+  ViewInAr,
+  Image as ImageIcon,
+  AddPhotoAlternate,
+  Close,
+} from "@mui/icons-material";
+import {
+  uploadGlbFile,
+  getProductGlb,
+  getProductImage,
+  uploadProductImage,
+} from "../../../Services/product_service";
 import { toast } from "react-toastify";
 import "@google/model-viewer";
 
@@ -164,11 +176,16 @@ const ProductTable = ({
   };
 
   const isSelected = (productId) => selectedProducts.includes(productId);
-  const isAllSelected = products.length > 0 && selectedProducts.length === products.length;
-  const isIndeterminate = selectedProducts.length > 0 && selectedProducts.length < products.length;
+  const isAllSelected =
+    products.length > 0 && selectedProducts.length === products.length;
+  const isIndeterminate =
+    selectedProducts.length > 0 && selectedProducts.length < products.length;
 
   // Pagination logic
-  const paginatedProducts = products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const paginatedProducts = products.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <>
@@ -193,10 +210,7 @@ const ProductTable = ({
         </TableHead>
         <TableBody>
           {paginatedProducts.map((product) => (
-            <TableRow 
-              key={product.id}
-              selected={isSelected(product.id)}
-            >
+            <TableRow key={product.id} selected={isSelected(product.id)}>
               <TableCell padding="checkbox">
                 <Checkbox
                   checked={isSelected(product.id)}
@@ -232,32 +246,40 @@ const ProductTable = ({
               </TableCell>
               <TableCell>
                 <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
-                  <IconButton 
-                    onClick={() => handleViewGlb(product.id)} 
+                  <IconButton
+                    onClick={() => handleViewGlb(product.id)}
                     size="small"
                     title="View GLB"
                     disabled={!product.hasImage3D}
                   >
                     <ViewInAr />
                   </IconButton>
-                  <IconButton 
-                    onClick={() => handleViewImage(product.id)} 
+                  <IconButton
+                    onClick={() => handleViewImage(product.id)}
                     size="small"
                     title="View Photo"
                   >
                     <ImageIcon />
                   </IconButton>
-                  <IconButton 
-                    onClick={() => handleOpenImageUpload(product.id)} 
+                  <IconButton
+                    onClick={() => handleOpenImageUpload(product.id)}
                     size="small"
                     title="Add Photo"
                   >
                     <AddPhotoAlternate />
                   </IconButton>
-                  <IconButton onClick={() => onEdit(product)} size="small" title="Edit">
+                  <IconButton
+                    onClick={() => onEdit(product)}
+                    size="small"
+                    title="Edit"
+                  >
                     <Edit />
                   </IconButton>
-                  <IconButton onClick={() => onDelete(product.id)} size="small" title="Delete">
+                  <IconButton
+                    onClick={() => onDelete(product.id)}
+                    size="small"
+                    title="Delete"
+                  >
                     <Delete />
                   </IconButton>
                 </Box>
@@ -266,7 +288,7 @@ const ProductTable = ({
           ))}
         </TableBody>
       </Table>
-      
+
       {onPageChange && (
         <TablePagination
           component="div"
@@ -298,8 +320,8 @@ const ProductTable = ({
       </Dialog>
 
       {/* GLB View Modal */}
-      <Dialog 
-        open={glbViewOpen} 
+      <Dialog
+        open={glbViewOpen}
         onClose={handleCloseGlbView}
         maxWidth="md"
         fullWidth
@@ -310,18 +332,28 @@ const ProductTable = ({
           },
         }}
       >
-        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           View 3D Model - Product ID: {selectedProductId}
-          <IconButton
-            onClick={handleCloseGlbView}
-            size="small"
-          >
+          <IconButton onClick={handleCloseGlbView} size="small">
             <Close />
           </IconButton>
         </DialogTitle>
         <DialogContent sx={{ p: 0, position: "relative", height: "100%" }}>
           {loadingGlb ? (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
               <CircularProgress />
             </Box>
           ) : glbUrl ? (
@@ -341,7 +373,15 @@ const ProductTable = ({
               }}
             />
           ) : (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", p: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                p: 3,
+              }}
+            >
               <Typography>3D model not available for this product</Typography>
             </Box>
           )}
@@ -349,40 +389,81 @@ const ProductTable = ({
       </Dialog>
 
       {/* Image View Modal */}
-      <Dialog 
-        open={imageViewOpen} 
+      <Dialog
+        open={imageViewOpen}
         onClose={handleCloseImageView}
-        maxWidth="md"
+        maxWidth="lg"
         fullWidth
+        PaperProps={{
+          style: {
+            height: "90vh",
+            maxHeight: "90vh",
+          },
+        }}
       >
-        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           View Product Image - Product ID: {selectedProductId}
-          <IconButton
-            onClick={handleCloseImageView}
-            size="small"
-          >
+          <IconButton onClick={handleCloseImageView} size="small">
             <Close />
           </IconButton>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent
+          sx={{
+            p: 0,
+            position: "relative",
+            height: "100%",
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {loadingImage ? (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "300px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <CircularProgress />
             </Box>
           ) : imageUrl ? (
-            <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 2,
+              }}
+            >
               <img
                 src={imageUrl}
                 alt="Product"
                 style={{
-                  maxWidth: "100%",
-                  maxHeight: "70vh",
-                  objectFit: "contain",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center",
                 }}
               />
             </Box>
           ) : (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "300px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Typography>Image not available for this product</Typography>
             </Box>
           )}
@@ -404,7 +485,11 @@ const ProductTable = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseImageUpload}>Cancel</Button>
-          <Button onClick={handleImageUpload} variant="contained" color="primary">
+          <Button
+            onClick={handleImageUpload}
+            variant="contained"
+            color="primary"
+          >
             Upload
           </Button>
         </DialogActions>
