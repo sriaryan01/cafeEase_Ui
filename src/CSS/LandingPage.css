@@ -431,7 +431,7 @@ body {
 }
 
 .category-section-bottom {
-  margin-top: 5rem;
+  /* margin-top: 5rem; */
   display: flex;
   justify-content: center;
   align-items: center;

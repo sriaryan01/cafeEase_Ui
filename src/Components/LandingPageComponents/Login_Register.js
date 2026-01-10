@@ -43,9 +43,9 @@ const Login_Register = () => {
         }
       }
       if(decodedToken.role=='user')
-        navigate('/products');
+        navigate('/categories');
       else if(decodedToken.role=='admin')
-        navigate('/admin/products');
+        navigate('/admin/category');
       
 
     }).catch((error) => {

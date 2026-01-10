@@ -25,7 +25,14 @@ import {
   DialogContent,
   DialogActions,
   DialogContentText,
+  Paper,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  CircularProgress,
 } from "@mui/material";
+import { Add, FilterList, Clear } from "@mui/icons-material";
 import { toast } from "react-toastify";
 
 function Category() {
@@ -40,8 +47,10 @@ function Category() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [bulkDeleteDialog, setBulkDeleteDialog] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const loadCategories = async () => {
+    setLoading(true);
     try {
       const response = await fetchCategories();
       setAllCategories(response);
@@ -49,6 +58,8 @@ function Category() {
     } catch (error) {
       toast.error("Error fetching categories");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -195,93 +206,254 @@ function Category() {
     loadCategories();
   }, []);
 
+  if (loading) {
+    return (
+      <Box sx={{ p: 3, backgroundColor: "#f5f5f5", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Box sx={{ textAlign: "center" }}>
+          <CircularProgress size={60} sx={{ color: "#fe9e0d", mb: 2 }} />
+          <Typography variant="h6" sx={{ color: "#666" }}>
+            Loading Categories...
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
-    <div className="category admin-page">
-      <div style={{ padding: "20px" }}>
-        <h1 style={{ textAlign: "center" }}>Manage Categories</h1>
+    <Box sx={{ p: 3, backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
+      <Box sx={{ maxWidth: "1400px", mx: "auto" }}>
+        {/* Header Section */}
+        <Paper
+          elevation={3}
+          sx={{
+            p: 3,
+            mb: 3,
+            background: "linear-gradient(135deg, #fe9e0d 0%, #ff8c00 100%)",
+            borderRadius: 2,
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{
+              color: "white",
+              fontWeight: 700,
+              textAlign: "center",
+              mb: 2,
+              textShadow: "0 2px 4px rgba(0,0,0,0.2)",
+            }}
+          >
+            Manage Categories
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "rgba(255,255,255,0.9)",
+              textAlign: "center",
+            }}
+          >
+            Add, edit, and manage your product categories
+          </Typography>
+        </Paper>
 
         {/* Search and Add Button */}
-        <div
-          className="top_div"
-          style={{
-            display: "flex",
-            gap: "10px",
-            marginBottom: "20px",
-            alignItems: "center",
-          }}
-        >
-          <CategorySearchBar
-            id="searchbar"
-            style={{ flex: 1 }}
-            onSearch={handleSearch}
-            value={searchQuery}
-          />
-          <Button
-            style={{ height: "55px" }}
-            variant="contained"
-            color="primary"
-            onClick={handleAddCategoryClick}
+        <Paper elevation={2} sx={{ p: 2.5, mb: 3, borderRadius: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+              flexWrap: { xs: "wrap", sm: "nowrap" },
+            }}
           >
-            Add Category
-          </Button>
-        </div>
+            <CategorySearchBar
+              id="searchbar"
+              style={{ flex: 1, minWidth: "200px" }}
+              onSearch={handleSearch}
+              value={searchQuery}
+            />
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={handleAddCategoryClick}
+              sx={{
+                height: "55px",
+                backgroundColor: "#fe9e0d",
+                color: "white",
+                fontWeight: 600,
+                px: 3,
+                "&:hover": {
+                  backgroundColor: "#ff8c00",
+                  boxShadow: "0 4px 12px rgba(254, 158, 13, 0.4)",
+                },
+              }}
+            >
+              Add Category
+            </Button>
+          </Box>
+        </Paper>
 
         {/* Filters and Sorting */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            marginBottom: 2,
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          <FormControl size="small" sx={{ minWidth: 150 }}>
-            <InputLabel>Sort By</InputLabel>
-            <Select
-              value={sortBy}
-              label="Sort By"
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <MenuItem value="name">Name</MenuItem>
-            </Select>
-          </FormControl>
+        <Paper elevation={2} sx={{ p: 2.5, mb: 3, borderRadius: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              flexWrap: "wrap",
+              alignItems: "center",
+              mb: selectedCategories.length > 0 ? 2 : 0,
+            }}
+          >
+            <FilterList sx={{ color: "#fe9e0d", mr: 1 }} />
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "#666", mr: 1 }}>
+              Filters:
+            </Typography>
+            <FormControl size="small" sx={{ minWidth: 150 }}>
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                value={sortBy}
+                label="Sort By"
+                onChange={(e) => setSortBy(e.target.value)}
+                sx={{ backgroundColor: "white" }}
+              >
+                <MenuItem value="name">Name</MenuItem>
+              </Select>
+            </FormControl>
 
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>Order</InputLabel>
-            <Select
-              value={sortOrder}
-              label="Order"
-              onChange={(e) => setSortOrder(e.target.value)}
-            >
-              <MenuItem value="asc">Ascending</MenuItem>
-              <MenuItem value="desc">Descending</MenuItem>
-            </Select>
-          </FormControl>
+            <FormControl size="small" sx={{ minWidth: 120 }}>
+              <InputLabel>Order</InputLabel>
+              <Select
+                value={sortOrder}
+                label="Order"
+                onChange={(e) => setSortOrder(e.target.value)}
+                sx={{ backgroundColor: "white" }}
+              >
+                <MenuItem value="asc">Ascending</MenuItem>
+                <MenuItem value="desc">Descending</MenuItem>
+              </Select>
+            </FormControl>
 
-          <Button variant="outlined" onClick={clearFilters}>
-            Clear Filters
-          </Button>
+            <Button
+              variant="outlined"
+              startIcon={<Clear />}
+              onClick={clearFilters}
+              sx={{
+                borderColor: "#ccc",
+                color: "#666",
+                "&:hover": {
+                  borderColor: "#fe9e0d",
+                  backgroundColor: "#fff3e0",
+                  color: "#fe9e0d",
+                },
+              }}
+            >
+              Clear Filters
+            </Button>
+          </Box>
 
           {selectedCategories.length > 0 && (
-            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1.5,
+                alignItems: "center",
+                pt: 2,
+                borderTop: "1px solid #e0e0e0",
+                mt: 2,
+              }}
+            >
               <Chip
                 label={`${selectedCategories.length} selected`}
                 color="primary"
+                sx={{
+                  backgroundColor: "#fe9e0d",
+                  fontWeight: 600,
+                  "&:hover": {
+                    backgroundColor: "#ff8c00",
+                  },
+                }}
                 onDelete={() => setSelectedCategories([])}
               />
               <Button
-                variant="outlined"
+                variant="contained"
                 color="error"
                 size="small"
                 onClick={() => setBulkDeleteDialog(true)}
+                sx={{
+                  fontWeight: 600,
+                  boxShadow: "0 2px 8px rgba(244, 67, 54, 0.3)",
+                  "&:hover": {
+                    boxShadow: "0 4px 12px rgba(244, 67, 54, 0.4)",
+                  },
+                }}
               >
                 Delete Selected
               </Button>
             </Box>
           )}
-        </Box>
+        </Paper>
 
+        {/* Statistics Cards */}
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid item xs={12} sm={4}>
+            <Card
+              elevation={2}
+              sx={{
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                color: "white",
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                  {allCategories.length}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Total Categories
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Card
+              elevation={2}
+              sx={{
+                background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                color: "white",
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                  {filteredAndSortedCategories.filter(cat => cat.status !== false && cat.status !== "false").length}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Active Categories
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Card
+              elevation={2}
+              sx={{
+                background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                color: "white",
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                  {selectedCategories.length}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Selected Items
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        {/* Categories Table */}
         <CategoryTable
           categories={filteredAndSortedCategories}
           onEdit={handleEdit}
@@ -305,27 +477,60 @@ function Category() {
         <Dialog
           open={bulkDeleteDialog}
           onClose={() => setBulkDeleteDialog(false)}
+          PaperProps={{
+            sx: {
+              borderRadius: 2,
+              minWidth: "400px",
+            },
+          }}
         >
-          <DialogTitle>Confirm Bulk Delete</DialogTitle>
-          <DialogContent>
+          <DialogTitle
+            sx={{
+              backgroundColor: "#f44336",
+              color: "white",
+              fontWeight: 600,
+            }}
+          >
+            Confirm Bulk Delete
+          </DialogTitle>
+          <DialogContent sx={{ pt: 3 }}>
             <DialogContentText>
-              Are you sure you want to delete {selectedCategories.length}{" "}
+              Are you sure you want to delete <strong>{selectedCategories.length}</strong>{" "}
               category(ies)? This action cannot be undone.
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setBulkDeleteDialog(false)}>Cancel</Button>
+          <DialogActions sx={{ p: 2, gap: 1 }}>
+            <Button
+              onClick={() => setBulkDeleteDialog(false)}
+              variant="outlined"
+              sx={{
+                borderColor: "#ccc",
+                "&:hover": {
+                  borderColor: "#999",
+                  backgroundColor: "#f5f5f5",
+                },
+              }}
+            >
+              Cancel
+            </Button>
             <Button
               onClick={handleBulkDelete}
               color="error"
               variant="contained"
+              sx={{
+                fontWeight: 600,
+                boxShadow: "0 2px 8px rgba(244, 67, 54, 0.3)",
+                "&:hover": {
+                  boxShadow: "0 4px 12px rgba(244, 67, 54, 0.4)",
+                },
+              }}
             >
               Delete
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
