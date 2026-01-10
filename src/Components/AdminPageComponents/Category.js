@@ -203,6 +203,8 @@ function Category() {
   };
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     loadCategories();
   }, []);
 

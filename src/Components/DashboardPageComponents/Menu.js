@@ -108,7 +108,7 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
 
     const loadViewingOptions = async () => {
       // Only try 3D models if hasImage3D is true
-      if (product.hasImage3D) {
+    if (product.hasImage3D) {
         const formats = ["glb", "gltf", "usdz", "obj"];
         for (const format of formats) {
           try {
@@ -255,7 +255,7 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
               Interactive view not available
             </span>
           </Box>
-        )}
+          )}
       </div>
 
       <div className="addCartOptions">

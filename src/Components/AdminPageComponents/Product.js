@@ -161,9 +161,9 @@ function Product () {
         savedProduct = await addProduct(product);
         toast.success('Product added successfully!');
       }
-      fetchProducts();
-      setModalOpen(false);
-      setSelectedProduct(null);
+    fetchProducts();
+    setModalOpen(false);
+    setSelectedProduct(null);
       // Return saved product so ProductForm can use the ID for image upload
       return savedProduct;
     } catch (error) {
@@ -335,7 +335,7 @@ function Product () {
             </Button>
           </Box>
         </Paper>
-
+      
         {/* Filters and Sorting */}
         <Paper elevation={2} sx={{ p: 2.5, mb: 3, borderRadius: 2 }}>
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center', mb: selectedProducts.length > 0 ? 2 : 0 }}>
@@ -581,9 +581,9 @@ function Product () {
           onRefresh={fetchProducts}
         />
         
-        <Modal open={isModalOpen} onClose={() => setModalOpen(false)}>
-          <ProductForm onSave={handleAdd} selectedProduct={selectedProduct} categories={categories} />
-        </Modal>
+      <Modal open={isModalOpen} onClose={() => setModalOpen(false)}>
+      <ProductForm onSave={handleAdd} selectedProduct={selectedProduct} categories={categories} />
+      </Modal>
 
         {/* Bulk Delete Dialog */}
         <Dialog
