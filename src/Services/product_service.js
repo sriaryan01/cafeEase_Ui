@@ -96,21 +96,65 @@ export const uploadGlbFile = async (productId, glbFile) => {
   }
 };
 
-/* ✅ NEW: Fetch product GLB model */
-export const getProductGlb = async (productId) => {
+/* ✅ Fetch product 3D model (GLB/GLTF/USDZ/OBJ) */
+export const getProduct3DModel = async (productId, format = 'glb') => {
   try {
-    const response = await myAxios.get(`/product/glb/${productId}`, {
-      responseType: "blob", // important: we want raw binary file
+    // Try different format endpoints
+    const endpoints = {
+      glb: `/product/glb/${productId}`,
+      gltf: `/product/gltf/${productId}`,
+      usdz: `/product/usdz/${productId}`,
+      obj: `/product/obj/${productId}`,
+    };
+
+    const endpoint = endpoints[format.toLowerCase()] || endpoints.glb;
+    
+    const response = await myAxios.get(endpoint, {
+      responseType: "blob",
     });
 
     // Convert blob to an object URL for <model-viewer>
     const url = URL.createObjectURL(response.data);
-    return url;
+    return { url, format: format.toLowerCase() };
   } catch (error) {
-    console.error("Error fetching GLB file:", error);
+    console.error(`Error fetching ${format} file:`, error);
     throw error;
   }
 };
+
+/* ✅ Legacy: Fetch product GLB model (for backward compatibility) */
+export const getProductGlb = async (productId) => {
+  try {
+    const result = await getProduct3DModel(productId, 'glb');
+    return result.url;
+  } catch (error) {
+    // Try other formats as fallback
+    const formats = ['gltf', 'usdz', 'obj'];
+    for (const format of formats) {
+      try {
+        const result = await getProduct3DModel(productId, format);
+        return result.url;
+      } catch (e) {
+        continue;
+      }
+    }
+    throw error;
+  }
+};
+
+
+/* ✅ Fetch multiple product images */
+export const getProductImages = async (productId) => {
+  try {
+    const response = await myAxios.get(`/product/images/${productId}`);
+    // Assuming response returns array of image URLs
+    return response.data.data || response.data || [];
+  } catch (error) {
+    console.error("Error fetching product images:", error);
+    throw error;
+  }
+};
+
 
 // Search products by name or description
 export const searchProducts = async (query) => {
@@ -140,6 +184,21 @@ export const uploadProductImage = async (productId, imageFile) => {
     return response.data;
   } catch (error) {
     console.error("Error uploading product image:", error);
+    throw error;
+  }
+};
+
+/* ✅ Fetch product image */
+export const getProductImage = async (productId) => {
+  try {
+    const response = await myAxios.get(`/product/image/${productId}`, {
+      responseType: "blob",
+    });
+    // Convert blob to an object URL for display
+    const url = URL.createObjectURL(response.data);
+    return url;
+  } catch (error) {
+    console.error("Error fetching product image:", error);
     throw error;
   }
 };
