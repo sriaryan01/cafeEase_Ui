@@ -48,16 +48,51 @@ const ProductForm = ({ onSave, selectedProduct, categories }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSave(product);
-    
-    // Upload image if a new one was selected
-    if (imageFile && product.id) {
-      try {
-        await uploadProductImage(product.id, imageFile);
-        toast.success('Product image uploaded successfully!');
-      } catch (error) {
-        toast.error('Failed to upload product image');
+    try {
+      // Prepare product data for update - only include fields that should be updated
+      // Exclude image-related fields to prevent backend from clearing the image
+      const productData = {
+        name: product.name,
+        categoryId: product.categoryId,
+        description: product.description,
+        price: product.price,
+        status: product.status || "true", // Preserve status if it exists
+      };
+      
+      // Only include id if updating an existing product
+      if (product.id) {
+        productData.id = product.id;
       }
+      
+      // Explicitly exclude any image-related fields that might cause backend to clear the image
+      // These fields should never be sent in the update request
+      
+      // Save product first (this will return the created/updated product with ID)
+      const savedProduct = await onSave(productData);
+      
+      // Only upload image if a NEW file was selected (not just viewing existing image)
+      // This ensures we don't overwrite existing images when updating other product details
+      const productId = savedProduct?.id || savedProduct?.data?.id || product.id;
+      
+      // Only upload if imageFile is set (meaning user selected a new file)
+      // If imageFile is null, it means no new image was selected, so we skip upload
+      if (imageFile && productId) {
+        try {
+          await uploadProductImage(productId, imageFile);
+          toast.success('Product image uploaded successfully!');
+          // Update preview with the uploaded image URL if available
+          if (savedProduct?.imageUrl) {
+            setImagePreview(savedProduct.imageUrl);
+          }
+        } catch (error) {
+          console.error('Image upload error:', error);
+          toast.error('Product saved but failed to upload image. Please try uploading again.');
+        }
+      }
+      // If imageFile is null, we don't upload anything - existing image remains unchanged
+    } catch (error) {
+      console.error('Product save error:', error);
+      // Error toast will be handled by onSave
     }
   };
 

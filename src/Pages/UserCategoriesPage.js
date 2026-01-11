@@ -1,6 +1,6 @@
 import "../CSS/DashboardPage.css";
 import "../CSS/UserCartPage.css";
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '../Components/DashboardPageComponents/Navbar';
 import Footer from '../Components/DashboardPageComponents/Footer';
 
@@ -10,6 +10,11 @@ import Home from "../Components/DashboardPageComponents/Home";
 import Category from "../Components/DashboardPageComponents/Category";
 
 const CategoriesDashboard = () => {
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   return (
     <div className="App" >
       <ToastContainer/>

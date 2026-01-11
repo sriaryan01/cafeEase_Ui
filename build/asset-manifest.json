@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d1c42324.css",
+    "main.js": "/static/js/main.0b8f5f14.js",
+    "static/media/home-banner-image.png": "/static/media/home-banner-image.a41849b23e5c36d66717.png",
+    "static/media/login-background-image.png": "/static/media/login-background-image.d0e45280dd69dec26ee6.png",
+    "static/media/shakes.jpg": "/static/media/shakes.3c243edf8e8ee2a73c92.jpg",
+    "static/media/Pasta.jpg": "/static/media/Pasta.9527da24fb9cce16b7ec.jpg",
+    "static/media/stop-icon.png": "/static/media/stop-icon.6ce3f891c29f66202d85.png",
+    "static/media/Icon.png": "/static/media/Icon.dcdcc3821a4ed4ce8284.png",
+    "static/media/noOrders.webp": "/static/media/noOrders.c86533df5db886e6afeb.webp",
+    "static/media/calendar-icon.png": "/static/media/calendar-icon.bee24f5b6040b084f33f.png",
+    "static/media/pizza.png": "/static/media/pizza.9c3b1dc1e0349196fbfd.png",
+    "static/media/emptycart.svg": "/static/media/emptycart.2190885fd8db295a82a34dcba390ac56.svg",
+    "static/media/notFound.png": "/static/media/notFound.c9b8da77d18bda51b010.png",
+    "static/media/home-banner-background.png": "/static/media/home-banner-background.2a017f3f0336d1610c05.png",
+    "index.html": "/index.html",
+    "main.d1c42324.css.map": "/static/css/main.d1c42324.css.map",
+    "main.0b8f5f14.js.map": "/static/js/main.0b8f5f14.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d1c42324.css",
+    "static/js/main.0b8f5f14.js"
+  ]
+}

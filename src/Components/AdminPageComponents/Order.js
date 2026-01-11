@@ -21,10 +21,16 @@ import {
   DialogActions,
   DialogContentText,
   TextField,
+  Paper,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  CircularProgress,
 } from "@mui/material";
+import { FilterList, Clear, Search, CalendarToday } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import BillModal from "../DashboardPageComponents/BillModal";
-import CalendarIcon from "../../Assets/calendar-icon.png";
 import MyCalendar from "../DashboardPageComponents/Calendar";
 
 function Order() {
@@ -49,8 +55,10 @@ function Order() {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerContact, setCustomerContact] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const loadOrders = async () => {
+    setLoading(true);
     try {
       const response = await getAllOrdersForAdmin({});
       setAllOrders(response);
@@ -58,10 +66,13 @@ function Order() {
     } catch (error) {
       toast.error("Error fetching orders");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSearch = async () => {
+    setLoading(true);
     try {
       const orderId = searchQuery.trim() || null;
 
@@ -83,6 +94,8 @@ function Order() {
     } catch (error) {
       console.error("Search error:", error);
       toast.error("Error searching orders");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -203,62 +216,141 @@ function Order() {
     loadOrders();
   }, []);
 
-  return (
-    <div className="order admin-page">
-      <div style={{ padding: "20px", width: "100%", boxSizing: "border-box" }}>
-        <h1 style={{ textAlign: "center" }}>Manage Orders</h1>
+  if (loading && allOrders.length === 0) {
+    return (
+      <Box sx={{ p: 3, backgroundColor: "#f5f5f5", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Box sx={{ textAlign: "center" }}>
+          <CircularProgress size={60} sx={{ color: "#fe9e0d", mb: 2 }} />
+          <Typography variant="h6" sx={{ color: "#666" }}>
+            Loading Orders...
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
 
-        {/* Search and Filters */}
-        <Box
+  return (
+    <Box sx={{ p: 3, backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
+      <Box sx={{ maxWidth: "1400px", mx: "auto" }}>
+        {/* Header Section */}
+        <Paper
+          elevation={3}
           sx={{
-            display: "flex",
-            gap: 2,
-            marginBottom: 2,
-            flexWrap: "wrap",
-            alignItems: "center",
+            p: 3,
+            mb: 3,
+            background: "linear-gradient(135deg, #fe9e0d 0%, #ff8c00 100%)",
+            borderRadius: 2,
           }}
         >
-          <OrderSearchBar
-            id="searchbar"
-            style={{ flex: 1, minWidth: 200 }}
-            onSearch={setSearchQuery}
-            value={searchQuery}
-          />
-          <Button
-            variant="outlined"
-            onClick={toggleCalendars}
-            startIcon={<img src={CalendarIcon} alt="Calendar" style={{ width: 20, height: 20 }} />}
+          <Typography
+            variant="h4"
+            sx={{
+              color: "white",
+              fontWeight: 700,
+              textAlign: "center",
+              mb: 2,
+              textShadow: "0 2px 4px rgba(0,0,0,0.2)",
+            }}
           >
-            Date Range
-          </Button>
-          <TextField
-            size="small"
-            label="Customer Name"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            sx={{ minWidth: 180 }}
-          />
-          <TextField
-            size="small"
-            label="Customer Email"
-            value={customerEmail}
-            onChange={(e) => setCustomerEmail(e.target.value)}
-            sx={{ minWidth: 220 }}
-          />
-          <TextField
-            size="small"
-            label="Customer Contact"
-            value={customerContact}
-            onChange={(e) => setCustomerContact(e.target.value)}
-            sx={{ minWidth: 160 }}
-          />
-          <Button variant="contained" onClick={handleSearch}>
-            Search
-          </Button>
-          <Button variant="outlined" onClick={clearFilters}>
-            Clear
-          </Button>
-        </Box>
+            Manage Orders
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "rgba(255,255,255,0.9)",
+              textAlign: "center",
+            }}
+          >
+            View, manage, and track all customer orders
+          </Typography>
+        </Paper>
+
+        {/* Search and Filters */}
+        <Paper elevation={2} sx={{ p: 2.5, mb: 3, borderRadius: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <OrderSearchBar
+              id="searchbar"
+              style={{ flex: 1, minWidth: 200 }}
+              onSearch={setSearchQuery}
+              value={searchQuery}
+            />
+            <Button
+              variant="outlined"
+              onClick={toggleCalendars}
+              startIcon={<CalendarToday />}
+              sx={{
+                borderColor: "#ccc",
+                "&:hover": {
+                  borderColor: "#fe9e0d",
+                  backgroundColor: "#fff3e0",
+                  color: "#fe9e0d",
+                },
+              }}
+            >
+              Date Range
+            </Button>
+            <TextField
+              size="small"
+              label="Customer Name"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              sx={{ minWidth: 180, backgroundColor: "white" }}
+            />
+            <TextField
+              size="small"
+              label="Customer Email"
+              value={customerEmail}
+              onChange={(e) => setCustomerEmail(e.target.value)}
+              sx={{ minWidth: 220, backgroundColor: "white" }}
+            />
+            <TextField
+              size="small"
+              label="Customer Contact"
+              value={customerContact}
+              onChange={(e) => setCustomerContact(e.target.value)}
+              sx={{ minWidth: 160, backgroundColor: "white" }}
+            />
+            <Button
+              variant="contained"
+              onClick={handleSearch}
+              startIcon={<Search />}
+              sx={{
+                backgroundColor: "#fe9e0d",
+                color: "white",
+                fontWeight: 600,
+                "&:hover": {
+                  backgroundColor: "#ff8c00",
+                  boxShadow: "0 4px 12px rgba(254, 158, 13, 0.4)",
+                },
+              }}
+            >
+              Search
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={clearFilters}
+              startIcon={<Clear />}
+              sx={{
+                borderColor: "#ccc",
+                color: "#666",
+                "&:hover": {
+                  borderColor: "#fe9e0d",
+                  backgroundColor: "#fff3e0",
+                  color: "#fe9e0d",
+                },
+              }}
+            >
+              Clear
+            </Button>
+          </Box>
+        </Paper>
 
         {showCalendars && (
           <Box sx={{ mb: 2 }}>
@@ -271,69 +363,181 @@ function Order() {
         )}
 
         {/* Filters and Sorting */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            marginBottom: 2,
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          <FormControl size="small" sx={{ minWidth: 150 }}>
-            <InputLabel>Status</InputLabel>
-            <Select
-              value={filterStatus}
-              label="Status"
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <MenuItem value="all">All</MenuItem>
-              <MenuItem value="PENDING">Pending</MenuItem>
-              <MenuItem value="PROCESSING">Processing</MenuItem>
-              <MenuItem value="DELIVERED">Delivered</MenuItem>
-              <MenuItem value="CANCELLED">Cancelled</MenuItem>
-            </Select>
-          </FormControl>
+        <Paper elevation={2} sx={{ p: 2.5, mb: 3, borderRadius: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <FilterList sx={{ color: "#fe9e0d", mr: 1 }} />
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "#666", mr: 1 }}>
+              Filters:
+            </Typography>
+            <FormControl size="small" sx={{ minWidth: 150 }}>
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={filterStatus}
+                label="Status"
+                onChange={(e) => setFilterStatus(e.target.value)}
+                sx={{ backgroundColor: "white" }}
+              >
+                <MenuItem value="all">All</MenuItem>
+                <MenuItem value="PENDING">Pending</MenuItem>
+                <MenuItem value="PROCESSING">Processing</MenuItem>
+                <MenuItem value="DELIVERED">Delivered</MenuItem>
+                <MenuItem value="CANCELLED">Cancelled</MenuItem>
+              </Select>
+            </FormControl>
 
-          <FormControl size="small" sx={{ minWidth: 150 }}>
-            <InputLabel>Sort By</InputLabel>
-            <Select
-              value={sortBy}
-              label="Sort By"
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <MenuItem value="orderId">Order ID</MenuItem>
-              <MenuItem value="date">Date</MenuItem>
-              <MenuItem value="amount">Amount</MenuItem>
-              <MenuItem value="status">Status</MenuItem>
-            </Select>
-          </FormControl>
+            <FormControl size="small" sx={{ minWidth: 150 }}>
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                value={sortBy}
+                label="Sort By"
+                onChange={(e) => setSortBy(e.target.value)}
+                sx={{ backgroundColor: "white" }}
+              >
+                <MenuItem value="orderId">Order ID</MenuItem>
+                <MenuItem value="date">Date</MenuItem>
+                <MenuItem value="amount">Amount</MenuItem>
+                <MenuItem value="status">Status</MenuItem>
+              </Select>
+            </FormControl>
 
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>Order</InputLabel>
-            <Select
-              value={sortOrder}
-              label="Order"
-              onChange={(e) => setSortOrder(e.target.value)}
+            <FormControl size="small" sx={{ minWidth: 120 }}>
+              <InputLabel>Order</InputLabel>
+              <Select
+                value={sortOrder}
+                label="Order"
+                onChange={(e) => setSortOrder(e.target.value)}
+                sx={{ backgroundColor: "white" }}
+              >
+                <MenuItem value="asc">Ascending</MenuItem>
+                <MenuItem value="desc">Descending</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Paper>
+
+        {/* Statistics Cards */}
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid item xs={12} sm={3}>
+            <Card
+              elevation={2}
+              sx={{
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                color: "white",
+                borderRadius: 2,
+              }}
             >
-              <MenuItem value="asc">Ascending</MenuItem>
-              <MenuItem value="desc">Descending</MenuItem>
-            </Select>
-          </FormControl>
+              <CardContent>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                  {allOrders.length}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Total Orders
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Card
+              elevation={2}
+              sx={{
+                background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                color: "white",
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                  {filteredAndSortedOrders.filter(o => o.orderStatus === "PENDING").length}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Pending Orders
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Card
+              elevation={2}
+              sx={{
+                background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                color: "white",
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                  ₹{filteredAndSortedOrders.length > 0 
+                    ? (filteredAndSortedOrders.reduce((sum, o) => sum + parseFloat(o.totalAmount || 0), 0) / filteredAndSortedOrders.length).toFixed(2)
+                    : "0.00"}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Average Order Value
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Card
+              elevation={2}
+              sx={{
+                background: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+                color: "white",
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                  {filteredAndSortedOrders.reduce((sum, o) => sum + parseFloat(o.totalAmount || 0), 0).toFixed(2)}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Total Revenue
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        {/* Orders Table */}
+        <Box sx={{ position: "relative" }}>
+          {loading && allOrders.length > 0 && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 10,
+                borderRadius: 2,
+              }}
+            >
+              <CircularProgress size={40} sx={{ color: "#fe9e0d" }} />
+            </Box>
+          )}
+          <OrderTable
+            orders={filteredAndSortedOrders}
+            onView={handleView}
+            onCancel={handleCancelClick}
+            onViewBill={handleViewBill}
+            onBulkSelect={setSelectedOrders}
+            selectedOrders={selectedOrders}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleRowsPerPageChange}
+          />
         </Box>
-
-        <OrderTable
-          orders={filteredAndSortedOrders}
-          onView={handleView}
-          onCancel={handleCancelClick}
-          onViewBill={handleViewBill}
-          onBulkSelect={setSelectedOrders}
-          selectedOrders={selectedOrders}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handlePageChange}
-          onRowsPerPageChange={handleRowsPerPageChange}
-        />
 
         <OrderDetailsModal
           open={isDetailsModalOpen}
@@ -355,23 +559,63 @@ function Order() {
         )}
 
         {/* Cancel Order Dialog */}
-        <Dialog open={cancelDialog} onClose={() => setCancelDialog(false)}>
-          <DialogTitle>Confirm Cancel Order</DialogTitle>
-          <DialogContent>
+        <Dialog
+          open={cancelDialog}
+          onClose={() => setCancelDialog(false)}
+          PaperProps={{
+            sx: {
+              borderRadius: 2,
+              minWidth: "400px",
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{
+              backgroundColor: "#f44336",
+              color: "white",
+              fontWeight: 600,
+            }}
+          >
+            Confirm Cancel Order
+          </DialogTitle>
+          <DialogContent sx={{ pt: 3 }}>
             <DialogContentText>
-              Are you sure you want to cancel order {orderToCancel}? This action
+              Are you sure you want to cancel order <strong>{orderToCancel}</strong>? This action
               cannot be undone.
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setCancelDialog(false)}>Cancel</Button>
-            <Button onClick={handleCancel} color="error" variant="contained">
+          <DialogActions sx={{ p: 2, gap: 1 }}>
+            <Button
+              onClick={() => setCancelDialog(false)}
+              variant="outlined"
+              sx={{
+                borderColor: "#ccc",
+                "&:hover": {
+                  borderColor: "#999",
+                  backgroundColor: "#f5f5f5",
+                },
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCancel}
+              color="error"
+              variant="contained"
+              sx={{
+                fontWeight: 600,
+                boxShadow: "0 2px 8px rgba(244, 67, 54, 0.3)",
+                "&:hover": {
+                  boxShadow: "0 4px 12px rgba(244, 67, 54, 0.4)",
+                },
+              }}
+            >
               Confirm Cancel
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
