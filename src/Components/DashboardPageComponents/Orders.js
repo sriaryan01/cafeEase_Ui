@@ -116,7 +116,7 @@ const Orders = () => {
             </>
           ) : (
             <>
-              <div>
+              <div className='orders-list-container'>
 
                 {orders.map(order => (
                   <Order key={order.orderId} order={order} />
@@ -165,20 +165,51 @@ const Order = ({ order }) => {
   };
 
   return (
-    <div>
-      <div className='Cart-Card'>
-        <div className='left-side'>
-          <h3 className='ProductName'>{order.orderId}</h3>
-          <div>Order Date - <p className='ProductPrice'>{GetDate(order.orderDateAndTime)}</p></div>
-          <div>Order Status - <p className='ProductPrice'>{order.orderStatus}</p></div>
-          <div>Total Quantity - <p className='ProductPrice'>{order.totalQuantity}</p></div>
-          <div>Total Amount - <p className='ProductPrice overall'> INR  {order.totalAmount}</p></div>
+    <div className='order-card-wrapper'>
+      <div className='order-card-container'>
+        <div className='order-card-header'>
+          <div className='order-card-title-section'>
+            <div className='order-badge-icon'>🛍️</div>
+            <div>
+              <h2 className='order-id'>Order #{order.orderId}</h2>
+              <span className='order-status-badge'>{order.orderStatus}</span>
+            </div>
+          </div>
         </div>
-        <div className='right-side'>
 
-          <button className='card-tag subtle view-order-btn' onClick={() => handleDetailsOpening()} >View Order Detail</button>
-          <button className='card-tag subtle' onClick={() => handleBillOpening(order.orderId)}>Download bill</button>
+        <div className='order-card-content'>
+          <div className='order-info-grid'>
+            <div className='order-info-item'>
+              <span className='order-info-icon'>📅</span>
+              <div>
+                <label className='order-info-label'>Order Date</label>
+                <p className='order-info-value'>{GetDate(order.orderDateAndTime)}</p>
+              </div>
+            </div>
+            <div className='order-info-item'>
+              <span className='order-info-icon'>📦</span>
+              <div>
+                <label className='order-info-label'>Total Quantity</label>
+                <p className='order-info-value'>{order.totalQuantity} items</p>
+              </div>
+            </div>
+            <div className='order-info-item'>
+              <span className='order-info-icon'>💰</span>
+              <div>
+                <label className='order-info-label'>Total Amount</label>
+                <p className='order-info-value'>INR {order.totalAmount}</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div className='order-card-actions'>
+          <button className='order-action-btn view-details-btn' onClick={() => handleDetailsOpening()}>
+            👁️ VIEW DETAILS
+          </button>
+          <button className='order-action-btn download-bill-btn' onClick={() => handleBillOpening(order.orderId)}>
+            ⬇️ DOWNLOAD BILL
+          </button>
         </div>
       </div>
       {showBillModal && (
