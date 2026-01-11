@@ -66,41 +66,47 @@ const Cart = () => {
         {
           IsCartEmpty(cart) ? (
             <>
-              <div className="cart-img" style={{
-                backgroundImage: `url(${EmptyCart})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                height: '70vh',
-                width: '100vw',
-              }}>
+              <div className="empty-cart-section">
+                <div className="cart-img" style={{
+                  backgroundImage: `url(${EmptyCart})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  height: '70vh',
+                  width: '100vw',
+                }}>
+                </div>
               </div>
-              <div className='total-container'>
-                <div className='left-side'>
-                  <div className='PricePerUnit'>Total Amount - <p className='ProductPrice'>INR 0</p></div>
+              <div className='cart-summary-footer'>
+                <div className='summary-left'>
+                  <span className='summary-label'>Total Amount</span>
+                  <span className='summary-total'>INR 0</span>
                 </div>
-                <div className='right-side'>
-                  <button className='card-tag place-ordr-btn subtle' onClick={handlePlaceOrder} disabled >Place Order</button>
-                </div>
+                <button className='cart-place-order-btn disabled-btn' disabled >Place Order</button>
               </div>
             </>
           ) : (
             <>
-              <div className='cart-heading'>
-              <h2>Your Cart</h2>
+              <div className='cart-header-section'>
+                <h2 className='cart-main-title'>🛒 Your Shopping Cart</h2>
+                <p className='cart-item-count'>{cart.items.length} {cart.items.length === 1 ? 'item' : 'items'} in cart</p>
               </div>
-              <div className='cart-items-container'>
-              {cart.items.map(item => (
-                <CartItems key={item.productId} item={item} setCart={setCart} />
-              ))}
+              <div className='cart-items-list'>
+                {cart.items.map(item => (
+                  <CartItems key={item.productId} item={item} setCart={setCart} />
+                ))}
               </div>
 
-              <div className='total-container'>
-                <div className='left-side'>
-                  <div className='PricePerUnit'>Total Amount - <p className='ProductPrice'>INR {cart.totalAmount}</p></div>
+              <div className='cart-summary-footer'>
+                <div className='summary-content'>
+                  <span className='dollar-icon'>$</span>
+                  <div className='summary-text'>
+                    <span className='summary-label'>Total Amount</span>
+                    <span className='summary-total-new'>INR {cart.totalAmount}</span>
+                  </div>
                 </div>
-                <div className='right-side'>
-                  <button className='card-tag place-ordr-btn subtle' onClick={handlePlaceOrder} disabled={IsCartEmpty(cart)} >Place Order</button>
-                </div>
+                <button className='place-order-btn-new' onClick={handlePlaceOrder} disabled={IsCartEmpty(cart)}>
+                  ✓ PLACE ORDER
+                </button>
               </div>
             </>
           )
@@ -168,15 +174,44 @@ const CartItems = ({ item, setCart }) => {
   };
 
   return (
-    <div className='Cart-Card'>
-      <div className='left-side'>
-        <h3 className='ProductName'>{item.productName}</h3>
-        <div>Price Per Unit - <p className='ProductPrice'>INR {item.pricePerUnit}</p></div>
-        <div>Overall Price - <p className='ProductPrice overall'>INR {item.price}</p></div>
+    <div className='cart-item-card-new'>
+      <div className='cart-item-left'>
+        <span className='cart-item-icon-badge'>🛍️</span>
+        <div className='cart-item-content'>
+          <h4 className='cart-item-name-new'>{item.productName}</h4>
+          <div className='cart-item-prices'>
+            <span className='cart-unit-price'>INR {item.pricePerUnit} per unit</span>
+            <span className='cart-total-price'>$ Total: INR {item.price}</span>
+          </div>
+        </div>
       </div>
-      <div className='addCartOptions right-side'>
-        <input type="number" id="quantity" className='ProductQuantity item-quantity' name="quantity" placeholder='Quantity' min="0" value={inputValue} onChange={handleInputChange} />
-        <button className='remove-item-btn subtle' onClick={() => handleRemoveFromCart(item.productId)}>Remove from Cart</button>
+
+      <div className='cart-item-controls'>
+        <button 
+          className='qty-btn qty-minus' 
+          onClick={() => handleQuantityChange(Math.max(0, inputValue - 1))}
+        >
+          −
+        </button>
+        <input 
+          type="number" 
+          className='qty-input-compact' 
+          value={inputValue} 
+          onChange={handleInputChange} 
+          min="0"
+        />
+        <button 
+          className='qty-btn qty-plus' 
+          onClick={() => handleQuantityChange(Number(inputValue) + 1)}
+        >
+          +
+        </button>
+        <button 
+          className='remove-btn-new' 
+          onClick={() => handleRemoveFromCart(item.productId)}
+        >
+          🗑️ REMOVE
+        </button>
       </div>
     </div>
   );
