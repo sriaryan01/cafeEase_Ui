@@ -87,14 +87,28 @@ const Orders = () => {
 
 
       <div className='inner-cart-container'>
-        <div className="search-container">
-          <input type="text" inputMode="numeric" id="search" placeholder="Search orders by OrderId..." onKeyDown={handleKeyDown} />
-          <button className='calendar-icon-container' onClick={toggleCalendars}>
-            <img src={CalendarIcon} className='calendar-icon' alt="Calendar Icon" />
-          </button>
-          <button className='card-tag subtle search-btn' onClick={searchOrdersAndHideCalendar}>Search</button>
+        <div className="orders-search-wrapper">
+          <div className="orders-search-bar-container">
+            <div className="search-input-wrapper">
+              <span className="search-icon">🔍</span>
+              <input 
+                type="text" 
+                inputMode="numeric" 
+                id="search" 
+                className="orders-search-input"
+                placeholder="Search orders by Order ID..." 
+                onKeyDown={handleKeyDown} 
+              />
+            </div>
+            <button className='orders-date-btn' onClick={toggleCalendars}>
+              📅 DATE RANGE
+            </button>
+            <button className='orders-search-btn' onClick={searchOrdersAndHideCalendar}>
+              🔎 SEARCH
+            </button>
+          </div>
         </div>
-        <div className='calendar-container'>
+        <div className={`calendar-container ${showCalendars ? 'show' : ''}`}>
           <MyCalendar
             showCalendars={showCalendars}
             toggleCalendars={toggleCalendars}

@@ -189,7 +189,11 @@ const CartItems = ({ item, setCart }) => {
       <div className='cart-item-controls'>
         <button 
           className='qty-btn qty-minus' 
-          onClick={() => handleQuantityChange(Math.max(0, inputValue - 1))}
+          onClick={() => {
+            const newQty = Math.max(0, Number(inputValue) - 1);
+            setInputValue(newQty);
+            handleQuantityChange(newQty);
+          }}
         >
           −
         </button>
@@ -202,7 +206,11 @@ const CartItems = ({ item, setCart }) => {
         />
         <button 
           className='qty-btn qty-plus' 
-          onClick={() => handleQuantityChange(Number(inputValue) + 1)}
+          onClick={() => {
+            const newQty = Number(inputValue) + 1;
+            setInputValue(newQty);
+            handleQuantityChange(newQty);
+          }}
         >
           +
         </button>

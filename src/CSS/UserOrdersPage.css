@@ -204,7 +204,7 @@
     /* margin-right: 10px; */
     height: 50px;
     width: 710px;
-    border: 2px solid #fe9e0d;
+    border: none;
     border-radius: 15px;
     font-size: medium;
 }
@@ -234,6 +234,167 @@
 .search-btn:hover {
     background-color: white;
     color: #000;
+}
+
+/* New Orders Search Styling */
+.orders-search-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 16px 20px;
+    margin: 0;
+}
+
+.orders-list-container{
+    margin-top: 0px;
+}
+
+.orders-search-bar-container {
+    width: 100%;
+    max-width: 1000px;
+    background: white;
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 2px solid #fe9e0d;
+    border-radius: 8px;
+    padding: 0 14px;
+    background: white;
+    transition: all 0.2s ease;
+    height: 44px;
+}
+
+.search-input-wrapper:focus-within {
+    box-shadow: 0 0 0 3px rgba(254, 158, 13, 0.1);
+}
+
+.search-icon {
+    font-size: 16px;
+    color: #fe9e0d;
+    margin-right: 8px;
+}
+
+.orders-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 10px 0;
+    color: #333;
+    background: transparent;
+}
+
+.orders-search-input::placeholder {
+    color: #b0b0b0;
+}
+
+.orders-date-btn {
+    padding: 10px 16px;
+    background-color: white;
+    color: #fe9e0d;
+    border: 2px solid #fe9e0d;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.orders-date-btn:hover {
+    background-color: #fff9f0;
+    box-shadow: 0 2px 8px rgba(254, 158, 13, 0.15);
+}
+
+.orders-search-btn {
+    padding: 10px 20px;
+    background-color: #fe9e0d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    box-shadow: 0 1px 4px rgba(254, 158, 13, 0.2);
+    height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.orders-search-btn:hover {
+    background-color: #ff8c00;
+    box-shadow: 0 4px 12px rgba(254, 158, 13, 0.3);
+    transform: translateY(-1px);
+}
+
+.orders-search-btn:active {
+    transform: translateY(0);
+}
+
+.calendar-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: none;
+}
+
+.calendar-container.show {
+    display: block;
+}
+
+/* Responsive Design for Search */
+@media (max-width: 1024px) {
+    .orders-search-bar-container {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px 16px;
+    }
+
+    .search-input-wrapper {
+        flex: 1;
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .orders-search-wrapper {
+        padding: 12px 10px;
+    }
+
+    .orders-search-bar-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .search-input-wrapper {
+        flex: 1;
+        height: 40px;
+    }
+
+    .orders-date-btn,
+    .orders-search-btn {
+        width: 100%;
+        height: 40px;
+    }
 }
 
 @media (max-width: 880px) {
