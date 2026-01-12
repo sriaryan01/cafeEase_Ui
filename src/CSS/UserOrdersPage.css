@@ -254,23 +254,25 @@
     max-width: 1000px;
     background: white;
     border-radius: 8px;
-    padding: 14px 18px;
+    padding: 8px 10px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: nowrap;
 }
 
 .search-input-wrapper {
     flex: 1;
+    min-width: 200px;
     display: flex;
     align-items: center;
     border: 2px solid #fe9e0d;
     border-radius: 8px;
-    padding: 0 14px;
+    padding: 0 12px;
     background: white;
     transition: all 0.2s ease;
-    height: 44px;
+    height: 40px;
 }
 
 .search-input-wrapper:focus-within {
@@ -298,19 +300,19 @@
 }
 
 .orders-date-btn {
-    padding: 10px 16px;
+    padding: 8px 12px;
     background-color: white;
     color: #fe9e0d;
     border: 2px solid #fe9e0d;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
     text-transform: uppercase;
     letter-spacing: 0.3px;
-    height: 44px;
+    height: 40px;
     display: flex;
     align-items: center;
 }
@@ -321,12 +323,12 @@
 }
 
 .orders-search-btn {
-    padding: 10px 20px;
+    padding: 8px 16px;
     background-color: #fe9e0d;
     color: white;
     border: none;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -334,7 +336,7 @@
     text-transform: uppercase;
     letter-spacing: 0.3px;
     box-shadow: 0 1px 4px rgba(254, 158, 13, 0.2);
-    height: 44px;
+    height: 40px;
     display: flex;
     align-items: center;
 }

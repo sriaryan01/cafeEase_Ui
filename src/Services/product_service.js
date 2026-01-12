@@ -89,10 +89,10 @@ export const uploadGlbFile = async (productId, glbFile) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    alert("3D model uploaded successfully!");
+    // alert("3D model uploaded successfully!");
   } catch (error) {
     console.error("Error uploading GLB:", error);
-    alert("Failed to upload 3D model.");
+    // alert("Failed to upload 3D model.");
   }
 };
 
