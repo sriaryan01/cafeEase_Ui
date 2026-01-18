@@ -56,7 +56,7 @@ CREATE DATABASE cafedb;
 ### Backend :
 #### 1. Clone the repository:
   ```
-git clone https://github.com/Adars987h/cafeEase.git 
+git clone https://github.com/sriaryan01/cafeEase_Be.git
 ``` 
 #### 2. Navigate to the project directory and build the application:
 ```
@@ -69,7 +69,7 @@ mvn clean install
 ### Frontend :
 #### 1. Clone the repository:
 ```
-git clone https://github.com/Adars987h/cafeEase_UI.git 
+git clone https://github.com/sriaryan01/cafeEase_Ui.git
 ```
  
 #### 2. Navigate to the project directory and install dependencies:

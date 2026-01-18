@@ -1,16 +1,185 @@
 
-.top_div{
-  
+.top_div {
     display: flex;
+    flex-direction: column;
+    gap: 16px;
     padding-bottom: 30px;
-  }
-  
-  #qwe{
+}
+
+#qwe {
     background-color: #61dafb;
-  }
-  
-  .App-link {
+}
+
+.App-link {
     color: #61dafb;
-  }
-  
-  
+}
+
+/* Admin Product Page Responsive Styles */
+
+/* Tablets (768px to 1024px) */
+@media (max-width: 1024px) {
+    .top_div {
+        gap: 12px;
+        padding-bottom: 20px;
+    }
+    
+    /* Search and filter controls */
+    .search-wrapper {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .action-buttons {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+/* Tablets and Large Phones (768px and below) */
+@media (max-width: 768px) {
+    .top_div {
+        flex-direction: column;
+        gap: 10px;
+        padding-bottom: 20px;
+    }
+    
+    /* Search wrapper */
+    .search-wrapper {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .search-input {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 12px;
+        height: 36px;
+    }
+    
+    /* Action buttons */
+    .action-buttons {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .action-button {
+        width: 100%;
+        padding: 8px;
+        font-size: 12px;
+        height: 36px;
+    }
+    
+    /* Table container */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Data grid adjustments */
+    .MuiDataGrid-root {
+        font-size: 12px;
+    }
+    
+    .MuiDataGrid-cell {
+        padding: 6px 4px;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media (max-width: 480px) {
+    .top_div {
+        flex-direction: column;
+        gap: 8px;
+        padding-bottom: 16px;
+    }
+    
+    /* Search input stacked */
+    .search-wrapper {
+        width: 100%;
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .search-input {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 11px;
+        height: 32px;
+        border-radius: 4px;
+    }
+    
+    /* Buttons stack vertically */
+    .action-buttons {
+        width: 100%;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .action-button {
+        width: 100%;
+        padding: 6px;
+        font-size: 11px;
+        height: 32px;
+        border-radius: 4px;
+    }
+    
+    /* Compact data grid */
+    .MuiDataGrid-root {
+        font-size: 11px;
+        border-radius: 4px;
+    }
+    
+    .MuiDataGrid-cell {
+        padding: 4px 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .MuiDataGrid-columnHeader {
+        padding: 6px 2px;
+    }
+    
+    /* Hide action columns on very small screens */
+    .MuiDataGrid-cell:nth-child(n+5) {
+        font-size: 10px;
+    }
+}
+
+/* Extra Small Devices (320px to 380px) */
+@media (max-width: 380px) {
+    .top_div {
+        gap: 6px;
+        padding-bottom: 12px;
+    }
+    
+    .search-input {
+        font-size: 10px;
+        height: 28px;
+        padding: 4px 8px;
+    }
+    
+    .action-button {
+        font-size: 10px;
+        height: 28px;
+        padding: 4px;
+    }
+    
+    .MuiDataGrid-root {
+        font-size: 9px;
+    }
+    
+    .MuiDataGrid-cell {
+        padding: 2px 1px;
+        font-size: 9px;
+    }
+    
+    .MuiDataGrid-columnHeader {
+        padding: 4px 1px;
+        font-size: 9px;
+    }
+}

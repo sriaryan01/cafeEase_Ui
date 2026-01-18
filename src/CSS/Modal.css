@@ -488,3 +488,276 @@ embed {
         padding: 10px;
     }
 }
+
+/* Admin Table & Form Responsive Styles */
+
+/* Tablets (768px to 1024px) */
+@media (max-width: 1024px) {
+    /* MUI Table responsive adjustments */
+    .MuiTable-root {
+        font-size: 13px;
+    }
+    
+    .MuiTableCell-root {
+        padding: 8px 6px;
+    }
+    
+    .MuiTableCell-head {
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    .MuiTableCell-body {
+        font-size: 12px;
+    }
+    
+    .MuiIconButton-root {
+        padding: 6px;
+    }
+    
+    /* Form inputs */
+    .MuiTextField-root {
+        margin: 8px !important;
+    }
+    
+    .MuiFormControlLabel-root {
+        margin: 8px;
+    }
+}
+
+/* Tablets and Large Phones (768px and below) */
+@media (max-width: 768px) {
+    /* Table adjustments */
+    .MuiTable-root {
+        font-size: 12px;
+    }
+    
+    .MuiTableCell-root {
+        padding: 6px 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .MuiTableCell-head {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 8px 4px;
+    }
+    
+    .MuiTableCell-body {
+        font-size: 11px;
+    }
+    
+    .MuiIconButton-root {
+        padding: 4px;
+        font-size: 18px;
+    }
+    
+    .MuiTablePagination-root {
+        font-size: 11px;
+    }
+    
+    /* Dialog/Modal adjustments */
+    .MuiDialog-paper {
+        margin: 16px;
+        width: 90vw;
+        max-height: 90vh;
+    }
+    
+    .MuiDialogTitle-root {
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    
+    .MuiDialogContent-root {
+        padding: 12px 16px;
+    }
+    
+    /* Form adjustments */
+    .MuiTextField-root {
+        margin: 6px 0 !important;
+        width: 100%;
+    }
+    
+    .MuiFormControlLabel-root {
+        margin: 4px 0;
+        font-size: 12px;
+    }
+    
+    .MuiButton-root {
+        padding: 6px 12px;
+        font-size: 12px;
+        margin: 4px;
+    }
+    
+    /* Search bar adjustments */
+    .MuiOutlinedInput-root {
+        font-size: 12px;
+        height: 36px;
+    }
+    
+    /* Remove horizontal overflow */
+    .MuiTableContainer-root {
+        overflow-x: auto;
+    }
+    
+    /* Adjust grid layouts */
+    .MuiGrid-root {
+        margin: 0 !important;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media (max-width: 480px) {
+    /* Hide less important columns on mobile */
+    .MuiTableCell-root:nth-child(n+4) {
+        display: none;
+    }
+    
+    .MuiTable-root {
+        font-size: 11px;
+    }
+    
+    .MuiTableCell-root {
+        padding: 4px 2px;
+    }
+    
+    .MuiTableCell-head {
+        font-size: 10px;
+        padding: 6px 2px;
+    }
+    
+    .MuiTableCell-body {
+        font-size: 10px;
+    }
+    
+    .MuiIconButton-root {
+        padding: 3px;
+        font-size: 16px;
+    }
+    
+    .MuiCheckbox-root {
+        padding: 3px;
+    }
+    
+    .MuiDialog-paper {
+        margin: 8px;
+        width: 95vw;
+        max-height: 95vh;
+        max-width: 100%;
+    }
+    
+    .MuiDialogTitle-root {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .MuiDialogContent-root {
+        padding: 10px 12px;
+    }
+    
+    .MuiDialogActions-root {
+        padding: 8px;
+        gap: 4px;
+    }
+    
+    .MuiButton-root {
+        padding: 4px 8px;
+        font-size: 11px;
+        min-width: auto;
+        margin: 2px;
+    }
+    
+    /* Form adjustments for mobile */
+    .MuiTextField-root {
+        margin: 4px 0 !important;
+        width: 100%;
+    }
+    
+    .MuiOutlinedInput-root {
+        font-size: 11px;
+        height: 32px;
+    }
+    
+    .MuiOutlinedInput-input {
+        padding: 6px 8px;
+    }
+    
+    .MuiFormControlLabel-root {
+        margin: 2px 0;
+        font-size: 11px;
+    }
+    
+    .MuiInputLabel-root {
+        font-size: 12px;
+    }
+    
+    /* Stack form elements vertically */
+    .MuiFormGroup-root {
+        flex-direction: column;
+    }
+    
+    .MuiTablePagination-root {
+        font-size: 10px;
+        padding: 4px;
+    }
+    
+    .MuiTablePagination-selectLabel,
+    .MuiTablePagination-displayedRows {
+        margin: 0;
+    }
+    
+    /* Stack toolbar on mobile */
+    .MuiToolbar-root {
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 4px;
+    }
+}
+
+/* Extra Small Devices (320px to 380px) */
+@media (max-width: 380px) {
+    .MuiTable-root {
+        font-size: 10px;
+    }
+    
+    .MuiTableCell-root {
+        padding: 2px 1px;
+        font-size: 9px;
+    }
+    
+    .MuiTableCell-head {
+        font-size: 9px;
+        padding: 4px 1px;
+    }
+    
+    .MuiIconButton-root {
+        padding: 2px;
+        font-size: 14px;
+    }
+    
+    .MuiDialog-paper {
+        margin: 4px;
+        width: 98vw;
+        max-height: 98vh;
+    }
+    
+    .MuiButton-root {
+        padding: 3px 6px;
+        font-size: 10px;
+        margin: 1px;
+    }
+    
+    .MuiTextField-root {
+        margin: 2px 0 !important;
+    }
+    
+    .MuiOutlinedInput-root {
+        font-size: 10px;
+        height: 28px;
+    }
+    
+    .MuiOutlinedInput-input {
+        padding: 4px 6px;
+    }
+}
