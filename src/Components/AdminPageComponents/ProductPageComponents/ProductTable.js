@@ -59,6 +59,8 @@ const ProductTable = ({
   const [imageUrl, setImageUrl] = useState(null);
   const [loadingGlb, setLoadingGlb] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [uploadingGlb, setUploadingGlb] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const handleOpenGlbUpload = (productId) => {
     setSelectedProductId(productId);
@@ -72,8 +74,12 @@ const ProductTable = ({
   };
 
   const handleGlbUpload = async () => {
-    if (!glbFile || !selectedProductId) return;
+    if (!glbFile || !selectedProductId) {
+      toast.error("Please select a file");
+      return;
+    }
 
+    setUploadingGlb(true);
     try {
       await uploadGlbFile(selectedProductId, glbFile);
       toast.success("GLB file uploaded successfully!");
@@ -81,7 +87,9 @@ const ProductTable = ({
       if (onRefresh) onRefresh();
     } catch (error) {
       console.error("Error uploading GLB:", error);
-      toast.error("Failed to upload GLB file");
+      toast.error(error?.message || "Failed to upload GLB file");
+    } finally {
+      setUploadingGlb(false);
     }
   };
 
@@ -145,8 +153,12 @@ const ProductTable = ({
   };
 
   const handleImageUpload = async () => {
-    if (!imageFile || !selectedProductId) return;
+    if (!imageFile || !selectedProductId) {
+      toast.error("Please select a file");
+      return;
+    }
 
+    setUploadingImage(true);
     try {
       await uploadProductImage(selectedProductId, imageFile);
       toast.success("Image uploaded successfully!");
@@ -154,7 +166,9 @@ const ProductTable = ({
       if (onRefresh) onRefresh();
     } catch (error) {
       console.error("Error uploading image:", error);
-      toast.error("Failed to upload image");
+      toast.error(error?.message || "Failed to upload image");
+    } finally {
+      setUploadingImage(false);
     }
   };
 
@@ -309,12 +323,20 @@ const ProductTable = ({
             type="file"
             accept=".glb"
             onChange={(e) => setGlbFile(e.target.files[0])}
+            disabled={uploadingGlb}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseGlbUpload}>Cancel</Button>
-          <Button onClick={handleGlbUpload} variant="contained" color="primary">
-            Upload
+          <Button onClick={handleCloseGlbUpload} disabled={uploadingGlb}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleGlbUpload}
+            variant="contained"
+            color="primary"
+            disabled={uploadingGlb}
+          >
+            {uploadingGlb ? "Uploading..." : "Upload"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -481,16 +503,20 @@ const ProductTable = ({
             type="file"
             accept="image/*"
             onChange={(e) => setImageFile(e.target.files[0])}
+            disabled={uploadingImage}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseImageUpload}>Cancel</Button>
+          <Button onClick={handleCloseImageUpload} disabled={uploadingImage}>
+            Cancel
+          </Button>
           <Button
             onClick={handleImageUpload}
             variant="contained"
             color="primary"
+            disabled={uploadingImage}
           >
-            Upload
+            {uploadingImage ? "Uploading..." : "Upload"}
           </Button>
         </DialogActions>
       </Dialog>

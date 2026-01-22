@@ -78,21 +78,21 @@ export const changeStatus = async (product) => {
 };
 
 export const uploadGlbFile = async (productId, glbFile) => {
-  if (!glbFile) return;
+  if (!glbFile) throw new Error("No file selected");
 
   const formData = new FormData();
   formData.append("file", glbFile);
 
   try {
-    await myAxios.post(`/product/uploadGlb/${productId}`, formData, {
+    const response = await myAxios.post(`/product/uploadGlb/${productId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    // alert("3D model uploaded successfully!");
+    return response.data;
   } catch (error) {
     console.error("Error uploading GLB:", error);
-    // alert("Failed to upload 3D model.");
+    throw new Error("Failed to upload GLB file");
   }
 };
 
@@ -170,7 +170,7 @@ export const searchProducts = async (query) => {
 
 // Upload product image
 export const uploadProductImage = async (productId, imageFile) => {
-  if (!imageFile) return;
+  if (!imageFile) throw new Error("No file selected");
 
   const formData = new FormData();
   formData.append("file", imageFile);
@@ -184,7 +184,7 @@ export const uploadProductImage = async (productId, imageFile) => {
     return response.data;
   } catch (error) {
     console.error("Error uploading product image:", error);
-    throw error;
+    throw new Error(error.response?.data?.message || error.message || "Failed to upload image");
   }
 };
 
