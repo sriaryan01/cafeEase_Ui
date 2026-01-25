@@ -89,27 +89,27 @@ npm start
 ### Screenshots
 
 #### Login & Registration form with Role-Based Authentication
-![image Login Form with Role-Based Authentication](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Login%20Form.png)
-![image Registretion Form with Role-Based Authentication](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Registration%20Form.png)
+![image Login Form with Role-Based Authentication](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Login%20Page.png)
+![image Registretion Form with Role-Based Authentication](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Registration%20Form.png)
 
 #### Products Page
-![image Products Page](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Products.png)
+![image Products Page](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/User%20Products%20Dashboard.png)
 
 #### User Cart
-![image User Cart](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Billing%20Page.png)
+![image User Cart](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/User%20Cart%20Dashboard.png)
 
 #### Orders 
-![image Orders](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Previous%20Orders.png)
+![image Orders](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Order%20Details.png)
 
 #### Real-Time Email Notifications 
-![image Email Notification](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Email%20Notification.png)
-![image Email Bill](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Email%20Bill.png)
+![image Email Notification](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Email%20Notification.png)
+![image Email Bill](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Email%20Bill.png)
 
 #### Toasts
-![Toasts](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Toasts.png)
+![Toasts](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Toasts.png)
 
 #### Admin Product Page
-![image Admin Product Page](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Admin%20Product%20Page.png)
-![image Admin Product Add Manage](https://github.com/Adars987h/cafeEase_UI/blob/main/Screenshots/Admin%20Product%20Add%20Manage.png)
+![image Category Page](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Admin%20Categories%20Dashboard.png)
+![image Order Dashboard](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Admin%20Order%20Dashboard.png)
 ### Contributing
 Contributions are welcome! Please create a pull request with your changes.
