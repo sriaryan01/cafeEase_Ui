@@ -1,4 +1,4 @@
-cxd# CafeEase - Restaurant Management System
+CafeEase - Restaurant Management System
 CafeEase is a full-stack restaurant management system designed to streamline and optimize restaurant operations. The project leverages a Spring Boot backend and a ReactJS frontend to provide a robust, scalable, and user-friendly solution.
 ![image CafeEase](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/CafeEase.png)
 
@@ -92,6 +92,8 @@ npm start
 ![image Login Form with Role-Based Authentication](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Login%20Page.png)
 ![image Registretion Form with Role-Based Authentication](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Registration%20Form.png)
 
+### 3D View
+![image 3D View](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/3D%20Image.png)
 #### Products Page
 ![image Products Page](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/User%20Products%20Dashboard.png)
 
