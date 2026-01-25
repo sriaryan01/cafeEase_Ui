@@ -108,7 +108,7 @@ npm start
 #### Toasts
 ![Toasts](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Toasts.png)
 
-#### Admin Product Page
+#### Admin Dashboard
 ![image Category Page](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Admin%20Categories%20Dashboard.png)
 ![image Order Dashboard](https://github.com/sriaryan01/cafeEase_Ui/blob/main/Screenshots/Admin%20Order%20Dashboard.png)
 ### Contributing
