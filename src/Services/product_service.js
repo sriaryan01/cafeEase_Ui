@@ -227,3 +227,38 @@ export const bulkUpdateStatus = async (productIds, status) => {
     throw error;
   }
 };
+
+// Upload QR code
+export const uploadQrCode = async (productId, qrFile) => {
+  if (!qrFile) throw new Error("No file selected");
+
+  const formData = new FormData();
+  formData.append("file", qrFile);
+
+  try {
+    const response = await myAxios.post(`/product/uploadQr/${productId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading QR code:", error);
+    throw new Error(error.response?.data?.message || error.message || "Failed to upload QR code");
+  }
+};
+
+/* ✅ Fetch product QR code */
+export const getProductQrCode = async (productId) => {
+  try {
+    const response = await myAxios.get(`/product/qr/${productId}`, {
+      responseType: "blob",
+    });
+    // Convert blob to an object URL for display
+    const url = URL.createObjectURL(response.data);
+    return url;
+  } catch (error) {
+    console.error("Error fetching product QR code:", error);
+    throw error;
+  }
+};

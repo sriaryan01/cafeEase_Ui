@@ -9,22 +9,29 @@ import EmptyCart from "../../Assets/emptycart.svg";
 import Spinner from './Spinner';
 
 const Cart = () => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({ items: [], totalAmount: 0, totalQuantity: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const getCart = async () => {
       try {
-        const cart = await fetchCart();
-        console.log("Cart fetched successfully")
-        setCart(cart);
+        const fetchedCart = await fetchCart();
+        
+        // Validate fetched cart
+        if (fetchedCart && typeof fetchedCart === 'object') {
+          setCart(fetchedCart);
+        } else {
+          // Set default empty cart structure
+          setCart({ items: [], totalAmount: 0, totalQuantity: 0 });
+        }
         setLoading(false);
-
       } catch (error) {
+        console.error("Error while fetching cart:", error);
         setError(error);
         setLoading(false);
-        console.log("Error while fetching cart");
+        // Set default empty cart structure on error
+        setCart({ items: [], totalAmount: 0, totalQuantity: 0 });
       }
     };
 
@@ -32,19 +39,26 @@ const Cart = () => {
   }, []);
 
   const handlePlaceOrder = async () =>{
+    try {
+      await placeOrderFromCart() 
+      toast.success("Order Placed", {
+        position: "bottom-left",
+        autoClose: 500,
+        closeOnClick: true,
+        theme: "dark",
+      })
 
-    await placeOrderFromCart() 
-    toast.success("Order Placed", {
-      position: "bottom-left",
-      autoClose: 500,
-      closeOnClick: true,
-      theme: "dark",
-    })
-
-    const cart = await fetchCart();
-    setCart(cart);
-
-}
+      const fetchedCart = await fetchCart();
+      if (fetchedCart && typeof fetchedCart === 'object') {
+        setCart(fetchedCart);
+      } else {
+        setCart({ items: [], totalAmount: 0, totalQuantity: 0 });
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("Failed to place order. Please try again.");
+    }
+  }
 
   if (loading) {
     return <div><Spinner/></div>;
@@ -118,44 +132,52 @@ const Cart = () => {
 };
 
 const IsCartEmpty = (cart) =>{
-  // console.log(items.length)
-  return cart == null || cart.items == null || cart.items.length === 0
+  // Check if cart is null, undefined, or has no items
+  return !cart || !cart.items || cart.items.length === 0;
 }  
 
 const CartItems = ({ item, setCart }) => {
   var [quantity, setQuantity] = useState(1);
-  const [inputValue, setInputValue] = useState(item.quantity);
-  const debouncedQuantity = useDebounce(inputValue, 1000); // 2000ms = 2 seconds
+  const [inputValue, setInputValue] = useState(item?.quantity || 1);
+  const debouncedQuantity = useDebounce(inputValue, 1000); // 1000ms = 1 second
 
-  quantity = item.quantity;
+  quantity = item?.quantity || 1;
 
   useEffect(() => {
-    if (debouncedQuantity !== item.quantity) {
+    if (debouncedQuantity !== item?.quantity) {
       handleQuantityChange(debouncedQuantity);
     }
-  }, [debouncedQuantity]);
+  }, [debouncedQuantity, item?.quantity]);
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    const value = e.target.value || 1;
+    setInputValue(Number(value));
   };
 
   const handleQuantityChange = async (qty) => {
-
-      // toast.success("Quantity updated...", {
-      //   theme: "dark"
-      // });
-      if (qty==0){
-        toast.info("Item removed!!!",{
-          position: "bottom-left",
-          autoClose: 500,
-          closeOnClick: true,
-          theme: "dark",
-        });
+      try {
+        qty = Number(qty) || 0;
+        if (qty === 0){
+          toast.info("Item removed!!!",{
+            position: "bottom-left",
+            autoClose: 500,
+            closeOnClick: true,
+            theme: "dark",
+          });
+        }
+        const updatedCart = await handleAddToCart(item.productId, qty);
+        
+        // Validate cart before setting state
+        if (updatedCart && typeof updatedCart === 'object' && updatedCart.items) {
+          setCart(updatedCart);
+        } else {
+          console.error('Invalid cart response:', updatedCart);
+          toast.error('Error updating cart. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error updating quantity:', error);
+        toast.error('Failed to update cart item');
       }
-      var cart = await handleAddToCart(item.productId, qty);
-      console.log(cart)
-      setCart(cart)
-    // }
   };
 
   const handleRemoveFromCart = async (productId) => {
@@ -167,9 +189,17 @@ const CartItems = ({ item, setCart }) => {
         theme: "dark",
       });
       const updatedCart = await handleAddToCart(productId, 0);
-      setCart(updatedCart);
+      
+      // Validate cart before setting state
+      if (updatedCart && typeof updatedCart === 'object' && updatedCart.items) {
+        setCart(updatedCart);
+      } else {
+        console.error('Invalid cart response:', updatedCart);
+        toast.error('Error removing item. Please try again.');
+      }
     } catch (error) {
       console.error("Error removing from cart", error);
+      toast.error('Failed to remove item from cart');
     }
   };
 

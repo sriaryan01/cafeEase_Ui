@@ -246,8 +246,21 @@ function Product () {
   };
 
   useEffect(() => {
-    fetchProducts();
-    getCategories();
+    setLoading(true);
+    // Fetch products and categories in parallel for faster load
+    Promise.all([
+      adminProductList(),
+      fetchCategories()
+    ]).then(([productsResponse, categoriesResponse]) => {
+      setAllProducts(productsResponse);
+      setProducts(productsResponse);
+      setCategories(categoriesResponse);
+      setLoading(false);
+    }).catch((error) => {
+      console.error('Error loading admin data:', error);
+      toast.error('Error loading products and categories');
+      setLoading(false);
+    });
   }, []);
 
   if (loading) {

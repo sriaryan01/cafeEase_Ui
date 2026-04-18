@@ -5,6 +5,7 @@ import {
   getProduct3DModel,
   getProductGlb,
   getProductImage,
+  getProductQrCode,
 } from "../../Services/product_service";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,12 +20,15 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
-import { Close, ViewInAr, ThreeDRotation } from "@mui/icons-material";
+import { Close, ViewInAr, ThreeDRotation, QrCode2 } from "@mui/icons-material";
 
 const Menu = ({ product, cartItemsIdToQuantityMap }) => {
   const [quantity, setQuantity] = useState(1);
   const [productImageUrl, setProductImageUrl] = useState(null);
   const [loadingImage, setLoadingImage] = useState(true);
+  const [qrCodeUrl, setQrCodeUrl] = useState(null);
+  const [loadingQrCode, setLoadingQrCode] = useState(true);
+  const [showQrModal, setShowQrModal] = useState(false);
 
   // Interactive viewing options (3D, AR, etc.)
   const [modelUrl, setModelUrl] = useState(null);
@@ -101,6 +105,33 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
     loadProductImage();
   }, [product.id, product.image]);
 
+  // Load QR code for display
+  useEffect(() => {
+    const loadQrCode = async () => {
+      try {
+        setLoadingQrCode(true);
+        const qrUrl = await getProductQrCode(product.id);
+        setQrCodeUrl(qrUrl);
+      } catch (error) {
+        console.log("QR code not available for this product");
+        setQrCodeUrl(null);
+      } finally {
+        setLoadingQrCode(false);
+      }
+    };
+
+    loadQrCode();
+  }, [product.id]);
+
+  // Cleanup: revoke object URL on unmount
+  useEffect(() => {
+    return () => {
+      if (qrCodeUrl) {
+        URL.revokeObjectURL(qrCodeUrl);
+      }
+    };
+  }, [qrCodeUrl]);
+
   // Fetch viewing options (3D model only)
   useEffect(() => {
     setLoadingModel(true);
@@ -109,30 +140,30 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
     const loadViewingOptions = async () => {
       // Only try 3D models if hasImage3D is true
     if (product.hasImage3D) {
-        const formats = ["glb", "gltf", "usdz", "obj"];
-        for (const format of formats) {
-          try {
-            const result = await getProduct3DModel(product.id, format);
-            setModelUrl(result.url);
-            setModelFormat(result.format);
-            setViewType("3d");
-            setLoadingModel(false);
-            return;
-          } catch (err) {
-            continue;
-          }
-        }
-        // Try legacy GLB endpoint
-        try {
-          const url = await getProductGlb(product.id);
-          setModelUrl(url);
-          setModelFormat("glb");
-          setViewType("3d");
-          setLoadingModel(false);
-          return;
-        } catch (err) {
+        // const formats = ["glb", "gltf", "usdz", "obj"];
+        // for (const format of formats) {
+        //   try {
+        //     const result = await getProduct3DModel(product.id, format);
+        //     setModelUrl(result.url);
+        //     setModelFormat(result.format);
+        //     setViewType("3d");
+        //     setLoadingModel(false);
+        //     return;
+        //   } catch (err) {
+        //     continue;
+        //   }
+        // }
+        // // Try legacy GLB endpoint
+        // try {
+        //   const url = await getProductGlb(product.id);
+        //   setModelUrl(url);
+        //   setModelFormat("glb");
+        //   setViewType("3d");
+        //   setLoadingModel(false);
+        //   return;
+        // } catch (err) {
           console.log("3D model not available");
-        }
+        //}
       }
 
       // No 3D model available
@@ -220,7 +251,7 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
       <div className="CategoryName">{product.categoryName}</div>
 
       {/* Interactive View Button - Only show if 3D model available */}
-      <div style={{ marginBottom: "10px" }}>
+      {/* <div style={{ marginBottom: "10px" }}>
         {loadingModel ? (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, p: 1 }}>
             <CircularProgress size={20} />
@@ -256,7 +287,7 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
             </span>
           </Box>
           )}
-      </div>
+      </div> */}
 
       <div className="addCartOptions">
         <input
@@ -269,6 +300,22 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
         />
+        {!loadingQrCode && qrCodeUrl && (
+          <IconButton
+            onClick={() => setShowQrModal(true)}
+            size="small"
+            title="View QR Code"
+            sx={{
+              color: "#fe9e0d",
+              padding: "8px",
+              "&:hover": {
+                backgroundColor: "rgba(254, 158, 13, 0.1)",
+              },
+            }}
+          >
+            <QrCode2 />
+          </IconButton>
+        )}
         <button
           className="card-tag subtle"
           onClick={() => {
@@ -281,7 +328,7 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
       </div>
 
       {/* Viewer Modal - Supports 3D only */}
-      <Dialog
+     <Dialog
         open={showARModal}
         onClose={closeARModal}
         maxWidth="md"
@@ -386,6 +433,73 @@ const Menu = ({ product, cartItemsIdToQuantityMap }) => {
               Launch AR
             </Button>
           )}
+        </DialogActions>
+      </Dialog>
+
+      {/* QR Code Modal */}
+      <Dialog
+        open={showQrModal}
+        onClose={() => setShowQrModal(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            height: "auto",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          QR Code - {product.name}
+          <IconButton onClick={() => setShowQrModal(false)} size="small">
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "400px",
+          }}
+        >
+          {qrCodeUrl && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <img
+                src={qrCodeUrl}
+                alt="Product QR Code"
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "contain",
+                  border: "2px solid #ddd",
+                  borderRadius: "8px",
+                  padding: "10px",
+                }}
+              />
+              <p style={{ fontSize: "0.9rem", color: "#666", marginTop: "10px" }}>
+                Scan this QR code to view product details
+              </p>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowQrModal(false)} variant="outlined">
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

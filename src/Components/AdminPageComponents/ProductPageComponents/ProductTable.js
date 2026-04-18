@@ -25,12 +25,15 @@ import {
   Image as ImageIcon,
   AddPhotoAlternate,
   Close,
+  QrCode2,
 } from "@mui/icons-material";
 import {
   uploadGlbFile,
   getProductGlb,
   getProductImage,
   uploadProductImage,
+  uploadQrCode,
+  getProductQrCode,
 } from "../../../Services/product_service";
 import { toast } from "react-toastify";
 import "@google/model-viewer";
@@ -52,15 +55,21 @@ const ProductTable = ({
   const [glbViewOpen, setGlbViewOpen] = useState(false);
   const [imageViewOpen, setImageViewOpen] = useState(false);
   const [imageUploadOpen, setImageUploadOpen] = useState(false);
+  const [qrCodeUploadOpen, setQrCodeUploadOpen] = useState(false);
+  const [qrCodeViewOpen, setQrCodeViewOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [glbFile, setGlbFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [qrCodeFile, setQrCodeFile] = useState(null);
   const [glbUrl, setGlbUrl] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState(null);
   const [loadingGlb, setLoadingGlb] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [loadingQrCode, setLoadingQrCode] = useState(false);
   const [uploadingGlb, setUploadingGlb] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingQrCode, setUploadingQrCode] = useState(false);
 
   const handleOpenGlbUpload = (productId) => {
     setSelectedProductId(productId);
@@ -172,6 +181,62 @@ const ProductTable = ({
     }
   };
 
+  const handleOpenQrCodeUpload = (productId) => {
+    setSelectedProductId(productId);
+    setQrCodeUploadOpen(true);
+  };
+
+  const handleCloseQrCodeUpload = () => {
+    setQrCodeUploadOpen(false);
+    setQrCodeFile(null);
+    setSelectedProductId(null);
+  };
+
+  const handleQrCodeUpload = async () => {
+    if (!qrCodeFile || !selectedProductId) {
+      toast.error("Please select a file");
+      return;
+    }
+
+    setUploadingQrCode(true);
+    try {
+      await uploadQrCode(selectedProductId, qrCodeFile);
+      toast.success("QR code uploaded successfully!");
+      handleCloseQrCodeUpload();
+      if (onRefresh) onRefresh();
+    } catch (error) {
+      console.error("Error uploading QR code:", error);
+      toast.error(error?.message || "Failed to upload QR code");
+    } finally {
+      setUploadingQrCode(false);
+    }
+  };
+
+  const handleViewQrCode = async (productId) => {
+    setSelectedProductId(productId);
+    setLoadingQrCode(true);
+    setQrCodeViewOpen(true);
+    try {
+      const url = await getProductQrCode(productId);
+      setQrCodeUrl(url);
+    } catch (error) {
+      console.error("Error loading QR code:", error);
+      setQrCodeUrl(null);
+      toast.error("Failed to load QR code");
+    } finally {
+      setLoadingQrCode(false);
+    }
+  };
+
+  const handleCloseQrCodeView = () => {
+    setQrCodeViewOpen(false);
+    if (qrCodeUrl) {
+      URL.revokeObjectURL(qrCodeUrl);
+      setQrCodeUrl(null);
+    }
+    setSelectedProductId(null);
+  };
+
   const handleSelectAll = (event) => {
     if (event.target.checked) {
       const allIds = products.map((p) => p.id);
@@ -281,6 +346,20 @@ const ProductTable = ({
                     title="Add Photo"
                   >
                     <AddPhotoAlternate />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => handleViewQrCode(product.id)}
+                    size="small"
+                    title="View QR Code"
+                  >
+                    <QrCode2 />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => handleOpenQrCodeUpload(product.id)}
+                    size="small"
+                    title="Upload QR Code"
+                  >
+                    <QrCode2 />
                   </IconButton>
                   <IconButton
                     onClick={() => onEdit(product)}
@@ -517,6 +596,116 @@ const ProductTable = ({
             disabled={uploadingImage}
           >
             {uploadingImage ? "Uploading..." : "Upload"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* QR Code View Modal */}
+      <Dialog
+        open={qrCodeViewOpen}
+        onClose={handleCloseQrCodeView}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            height: "60vh",
+            maxHeight: "60vh",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          View QR Code - Product ID: {selectedProductId}
+          <IconButton onClick={handleCloseQrCodeView} size="small">
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            p: 0,
+            position: "relative",
+            height: "100%",
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {loadingQrCode ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : qrCodeUrl ? (
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 2,
+              }}
+            >
+              <img
+                src={qrCodeUrl}
+                alt="QR Code"
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "contain",
+                }}
+              />
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography>QR code not available for this product</Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseQrCodeView}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* QR Code Upload Modal */}
+      <Dialog open={qrCodeUploadOpen} onClose={handleCloseQrCodeUpload}>
+        <DialogTitle>Upload QR Code</DialogTitle>
+        <DialogContent>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setQrCodeFile(e.target.files[0])}
+            disabled={uploadingQrCode}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseQrCodeUpload} disabled={uploadingQrCode}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleQrCodeUpload}
+            variant="contained"
+            color="primary"
+            disabled={uploadingQrCode}
+          >
+            {uploadingQrCode ? "Uploading..." : "Upload"}
           </Button>
         </DialogActions>
       </Dialog>

@@ -2,11 +2,22 @@ import { myAxios } from "./helper";
 
 export const placeOrderFromCart = async() => {
     try {
+      console.log('Placing order...');
       const response = await myAxios.post("/orders");
+      console.log('Order response:', response);
       const data = response.data;
+      
+      if (!data) {
+        throw new Error('No response data received');
+      }
+      
+      console.log('Order placed successfully:', data);
+      // Email should be triggered automatically on backend
+      console.log('Email notification should be sent to customer');
       return data;
   } catch (error) {
-      console.error('Error placing order :', error);
+      console.error('Error placing order:', error);
+      console.error('Error details:', error.response?.data || error.message);
       throw error;
   }
 };

@@ -45,3 +45,15 @@ export const downloadBill = async (orderId) => {
         console.error('Error downloading the PDF file', error);
     }
 };
+
+export const sendBillByEmail = async (orderId, email) => {
+    try {
+        const response = await myAxios.post(`/bill/${orderId}/send-email`, null, {
+            params: { email: email }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error sending bill by email', error);
+        throw error;
+    }
+};
